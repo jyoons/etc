@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>통역봇 상담 시스템</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <div class="header-container">
+            <!-- 로고 -->
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="images/logo.svg" alt="Logo"/>
+                </div>
+                <span class="logo-text">통역봇</span>
+            </div>
+            
+            <!-- 사용자 정보 -->
+            <div class="user-info">
+                <div class="user-profile">
+                    <div class="profile-image">
+                        <img src="images/profile.png" alt="Profile" />
+                    </div>
+                    <span class="username">honggildong27</span>
+                </div>
+                <div class="logout-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M2.5 3.84443C2.5 2.72924 3.40404 1.8252 4.51923 1.8252H7.40386C7.88179 1.8252 8.26924 2.21265 8.26924 2.69058C8.26924 3.16852 7.88179 3.55597 7.40386 3.55597H4.51923C4.35992 3.55597 4.23077 3.68512 4.23077 3.84443V15.9598C4.23077 16.1192 4.35992 16.2483 4.51923 16.2483H7.40386C7.88179 16.2483 8.26924 16.6358 8.26924 17.1137C8.26924 17.5916 7.88179 17.9791 7.40386 17.9791H4.51923C3.40404 17.9791 2.5 17.075 2.5 15.9598V3.84443ZM14.5454 9.03675H7.9808C7.50287 9.03675 7.11542 9.4242 7.11542 9.90213C7.11542 10.3801 7.50287 10.7675 7.9808 10.7675H14.5454L12.2727 13.0403C11.9348 13.3782 11.9348 13.9261 12.2727 14.264C12.6107 14.602 13.1586 14.602 13.4965 14.264L17.2465 10.5141C17.5845 10.1761 17.5845 9.62816 17.2465 9.29021L13.4965 5.54021C13.1586 5.20226 12.6107 5.20226 12.2727 5.54021C11.9348 5.87816 11.9348 6.4261 12.2727 6.76405L14.5454 9.03675Z" fill="#AAAAAA"/>
+				    			</svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <div class="main-container">
+        <!-- 왼쪽 사이드바 -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <!-- 언어 선택 -->
+                <div class="section">
+                    <h3 class="section-title">언어선택</h3>
+                    <div class="language-selection">
+                        <div class="language-row">
+                            <label class="language-item">
+                                <input type="checkbox" class="language-checkbox">
+                                <span class="checkmark"></span>
+                                <span class="language-text">영어</span>
+                            </label>
+                            <label class="language-item">
+                                <input type="checkbox" class="language-checkbox" checked>
+                                <span class="checkmark"></span>
+                                <span class="language-text">러시아어</span>
+                            </label>
+                            <label class="language-item">
+                                <input type="checkbox" class="language-checkbox">
+                                <span class="checkmark"></span>
+                                <span class="language-text">일본어</span>
+                            </label>
+                        </div>
+                        <div class="language-row">
+                            <label class="language-item">
+                                <input type="checkbox" class="language-checkbox">
+                                <span class="checkmark"></span>
+                                <span class="language-text">베트남어</span>
+                            </label>
+                            <label class="language-item">
+                                <input type="checkbox" class="language-checkbox">
+                                <span class="checkmark"></span>
+                                <span class="language-text">중국어</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 내선 번호 -->
+                <div class="section">
+                    <h3 class="section-title">내선 번호</h3>
+                    <div class="extension-number">
+                        <span>1234</span>
+                    </div>
+                </div>
+
+                <!-- 가입 상품명 -->
+                <div class="section">
+                    <h3 class="section-title">가입 상품 명</h3>
+                    <div class="product-select">
+                        <select class="product-dropdown">
+                            <option>참좋은 운전자 상해보험</option>
+                            <option>가족사랑 간병 치매보험</option>
+                            <option>실버건강보험</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 통역시작 버튼 -->
+                <div class="start-section">
+                    <button class="start-btn">
+                        <div class="btn-icon">
+                            <img src="images/btn-icon.png" alt="Start Icon" />
+                        </div>
+                        통역시작
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 중앙 대화 영역 -->
+        <main class="chat-area">
+            <div class="chat-container">
+                <!-- 대화 헤더 -->
+                <div class="chat-header">
+                    <div class="language-badge">
+                        <span>러시아어</span>
+                    </div>
+                    <div class="chat-time">
+                        <span>2025-08-14 10:31:20</span>
+                    </div>
+                </div>
+
+                <!-- 대화 내용 -->
+                <div class="chat-messages">
+                    <!-- 봇 메시지 -->
+                    <div class="message-group bot-message">
+                        <div class="message-bubble bot-bubble">
+                            <div class="message-text">
+                                계약체결시 자필서명 미이행한 경우 위법 계약으로<br>
+                                향후 불이익이 발생할 수 있는데요.<br>
+                                피보험자께서 계약체결시 직접 서명(본인인증 포함) 하셨습니까?
+                            </div>
+                        </div>
+                        <div class="message-bubble translation-bubble">
+                            <div class="message-text">
+                                В случае неисполнения подписи во время заключения контракта,<br>
+                                незаконный контракт может привести к убыткам.<br>
+                                Подписал ли страхователь лично (включая самосертификацию) при заключении договора?
+                            </div>
+                        </div>
+                        <div class="message-time">오후 16:14</div>
+                    </div>
+
+                    <!-- 사용자 메시지 -->
+                    <div class="message-group user-message">
+                        <div class="user-avatar">
+                            <span>Л</span>
+                        </div>
+                        <div class="user-message-content">
+                            <div class="user-name">Ли Мин Хо</div>
+                            <div class="message-bubble user-bubble">
+                                <div class="message-text">Да, верно.</div>
+                            </div>
+                            <div class="message-bubble translation-bubble">
+                                <div class="message-text">네, 맞습니다.</div>
+                            </div>
+                            <div class="message-time">오후 16:20</div>
+                        </div>
+                    </div>
+
+                    <!-- 봇 메시지 -->
+                    <div class="message-group bot-message">
+                        <div class="message-bubble bot-bubble">
+                            <div class="message-text">
+                                계약자와 피보험자가 다른 계약에서 피보험자의 사망을 보장하는 보험은<br>
+                                피보험자의 서면 동의를 반드시 받으셔야 합니다.<br>
+                                미동의시 무효계약에 해당되는데요 피보험자 본인께서 직접 서명(본인인증 포함)하셨습니까?
+                            </div>
+                        </div>
+                        <div class="message-bubble translation-bubble">
+                            <div class="message-text">
+                                Страхование, гарантирующее смерть страхователя по другому договору между Стороной и страхователем,<br>
+                                обязательно должно получить письменное согласие страхователя. Это относится к недействительному договору<br>
+                                в случае несогласия. Подписал ли страхователь сам (включая самосертификацию)?
+                            </div>
+                        </div>
+                        <div class="message-time">오후 16:21</div>
+                    </div>
+
+                    <!-- 사용자 메시지 -->
+                    <div class="message-group user-message">
+                        <div class="user-avatar">
+                            <span>Л</span>
+                        </div>
+                        <div class="user-message-content">
+                            <div class="user-name">Ли Мин Хо</div>
+                            <div class="message-bubble user-bubble">
+                                <div class="message-text">Я не понимаю.</div>
+                            </div>
+                            <div class="message-bubble translation-bubble">
+                                <div class="message-text">무슨 말인지 잘 모르겠어요.</div>
+                            </div>
+                            <div class="message-time">오후 16:26</div>
+                        </div>
+                    </div>
+
+                    <!-- 봇 메시지 -->
+                    <div class="message-group bot-message">
+                        <div class="message-bubble bot-bubble">
+                            <div class="message-text">이해가 안되시는군요. 쉽게 설명해 드리겠습니다.</div>
+                        </div>
+                        <div class="message-bubble translation-bubble">
+                            <div class="message-text">Вы не понимаете. Я просто объясню.</div>
+                        </div>
+                        <div class="message-time">오후 16:27</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 오른쪽 스크립트 패널 -->
+        <aside class="script-panel">
+            <div class="script-content">
+                <h3 class="script-title">간편한 가족사랑 간병 치매보험 스크립트</h3>
+                
+                <div class="script-list">
+                    <div class="script-item">
+                        <span class="script-text">[공통]T청약서부본및 상품설명서</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]약관교부 및 설명</span>
+                        <button class="play-btn paused">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]설명내용 상품설명서 동일확인</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]자필서명여부</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]품질보증해지안내</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]청약철회</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]위법계약해지</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]고지의무위반 알릴의무</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]통지의무</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]보험금지급관련</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">보험료 감액청구권</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]수익자지정</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]승환계약</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]신용정보동의</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">보험료와 환급율차이</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[해지환급금]치매관련-완판안내</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">보상대상질병</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[치매]보장대상질병 -완판안내</span>
+                        <button class="play-btn">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>

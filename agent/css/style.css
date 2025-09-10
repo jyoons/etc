@@ -1,0 +1,640 @@
+/* 기본 스타일 리셋 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* CSS 변수 정의 - Figma 디자인 토큰 */
+:root {
+    --primary-color: #097FE8;
+    --primary-light: #3e9bed;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --border-color: #ebebeb;
+    --text-primary: #222222;
+    --text-secondary: #333333;
+    --text-tertiary: #777777;
+    --white: #ffffff;
+    --yellow-bg: #fff5cd;
+    --yellow-border: #f2e9c3;
+    --red-bg: #ffd8ce;
+    --red-border: #f2cdc3;
+    --blue-bg: #e9f0f8;
+    --blue-light: #95bdf0;
+    --blue-profile: #8195ff;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* 기본 타이포그래피 */
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--white);
+    overflow: hidden;
+}
+
+/* 헤더 */
+.header {
+    height: 46px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px 0 24px;
+    max-width: 1920px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-color);
+    letter-spacing: -0.15px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-image {
+    width: 26px;
+    height: 26px;
+    background: var(--blue-profile);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.username {
+    font-size: 13px;
+    font-weight: 400;
+    color: #444444;
+}
+
+.logout-btn {
+    width: 16px;
+    height: 16.842px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.logout-btn svg {
+    width: 100%;
+    height: 100%;
+}
+
+.logout-btn:hover svg path {
+    stroke: var(--primary-color);
+}
+
+/* 메인 컨테이너 */
+.main-container {
+    display: flex;
+    height: 100vh;
+    padding-top: 46px;
+}
+
+/* 왼쪽 사이드바 */
+.sidebar {
+    width: 400px;
+    background: var(--white);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+}
+
+.sidebar-content {
+    padding: 16px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    height: 28px;
+    display: flex;
+    align-items: center;
+}
+
+/* 언어 선택 */
+.language-selection {
+    background: var(--gray-50);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 18px 20px;
+}
+
+.language-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    justify-content: flex-start;
+}
+
+.language-row:last-child {
+    margin-bottom: 0;
+}
+
+.language-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.language-checkbox {
+    display: none;
+}
+
+.checkmark {
+    width: 16px;
+    height: 16px;
+    background: var(--white);
+    border: 1.2px solid #aaaaaa;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.language-checkbox:checked + .checkmark {
+    background: var(--white);
+    border-color: #222222;
+    border-width: 1.2px;
+}
+
+.language-checkbox:checked + .checkmark::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 11px;
+    height: 8.342px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 8.342' fill='none'%3E%3Cpath d='M1 4.171L3.5 6.671L10 0.171' stroke='%23222222' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.language-text {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 16px;
+}
+
+/* 내선 번호 */
+.extension-number {
+    background: var(--gray-50);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 18px 20px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+/* 상품 선택 */
+.product-select {
+    background: var(--gray-50);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 18px 20px;
+}
+
+.product-dropdown {
+    width: 100%;
+    height: 30px;
+    background: var(--white);
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%23333333' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px 12px;
+    padding-right: 30px;
+}
+
+.product-dropdown:hover {
+    border-color: #bbbbbb;
+}
+
+.product-dropdown:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(9, 127, 232, 0.1);
+}
+
+/* 통역시작 버튼 */
+.start-section {
+    padding-top: 10px;
+}
+
+.start-btn {
+    width: 100%;
+    height: 44px;
+    background: var(--primary-light);
+    border: none;
+    border-radius: 6px;
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.start-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.btn-icon {
+    width: 16px;
+    height: 18.667px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 중앙 대화 영역 */
+.chat-area {
+    flex: 1;
+    background: #f2f2f2;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-container {
+    background: var(--white);
+    border-radius: 12px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.language-badge {
+    background: var(--gray-100);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.chat-time {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #e9f0f8;
+    border-radius: 6px;
+    margin: 0 24px 24px 24px;
+}
+
+/* 메시지 그룹 */
+.message-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.bot-message {
+    align-items: flex-end;
+}
+
+.user-message {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.user-avatar {
+    width: 34px;
+    height: 34px;
+    background: var(--blue-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.user-message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 236px;
+}
+
+.user-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 0 4px;
+}
+
+/* 메시지 버블 */
+.message-bubble {
+    padding: 12px 14px;
+    border-radius: 12px;
+    position: relative;
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+.bot-bubble {
+    background: var(--yellow-bg);
+    border: 1px solid var(--yellow-border);
+    border-bottom-right-radius: 0;
+}
+
+.translation-bubble {
+    background: var(--red-bg);
+    border: 1px solid var(--red-border);
+    border-bottom-right-radius: 0;
+}
+
+.user-bubble {
+    background: var(--white);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.message-text {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 20px;
+}
+
+.message-time {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    line-height: 16px;
+    margin-top: 6px;
+}
+
+.bot-message .message-time {
+    text-align: right;
+}
+
+/* 오른쪽 스크립트 패널 */
+.script-panel {
+    width: 450px;
+    background: var(--white);
+    border-left: 1px solid var(--border-color);
+    overflow-y: auto;
+}
+
+.script-content {
+    padding: 16px 30px;
+}
+
+.script-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.script-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.script-item {
+    background: var(--gray-50);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px 0 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.script-item:hover {
+    background: var(--gray-100);
+}
+
+.script-text {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 16px;
+    flex: 1;
+}
+
+.play-btn {
+    width: 16px;
+    height: 16px;
+    background: url('../images/play-icon.png') no-repeat center;
+    background-size: contain;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+}
+
+.play-btn:hover {
+    opacity: 0.7;
+}
+
+.play-btn.paused {
+    background: url('../images/pause-icon.png') no-repeat center;
+    background-size: contain;
+}
+
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 350px;
+    }
+    
+    .script-panel {
+        width: 400px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .script-panel {
+        width: 100%;
+        height: 300px;
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .chat-area {
+        flex: 1;
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 16px;
+    }
+    
+    .sidebar-content,
+    .script-content {
+        padding: 16px;
+    }
+    
+    .chat-messages {
+        padding: 14px 16px;
+    }
+    
+    .language-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .language-item {
+        width: 100%;
+    }
+}
