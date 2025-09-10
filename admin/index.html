@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>통역봇 관리 시스템</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <div class="header-container">
+            <!-- 로고 -->
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="images/logo.svg" alt="Logo"/>
+                </div>
+                <span class="logo-text">통역봇</span>
+            </div>
+            
+            <!-- 사용자 정보 -->
+            <div class="user-info">
+                <div class="user-profile">
+                    <div class="profile-image">
+                        <img src="images/profile.png" alt="Profile" />
+                    </div>
+                    <span class="username">admin</span>
+                </div>
+                <div class="logout-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2.5 3.84443C2.5 2.72924 3.40404 1.8252 4.51923 1.8252H7.40386C7.88179 1.8252 8.26924 2.21265 8.26924 2.69058C8.26924 3.16852 7.88179 3.55597 7.40386 3.55597H4.51923C4.35992 3.55597 4.23077 3.68512 4.23077 3.84443V15.9598C4.23077 16.1192 4.35992 16.2483 4.51923 16.2483H7.40386C7.88179 16.2483 8.26924 16.6358 8.26924 17.1137C8.26924 17.5916 7.88179 17.9791 7.40386 17.9791H4.51923C3.40404 17.9791 2.5 17.075 2.5 15.9598V3.84443ZM14.5454 9.03675H7.9808C7.50287 9.03675 7.11542 9.4242 7.11542 9.90213C7.11542 10.3801 7.50287 10.7675 7.9808 10.7675H14.5454L12.2727 13.0403C11.9348 13.3782 11.9348 13.9261 12.2727 14.264C12.6107 14.602 13.1586 14.602 13.4965 14.264L17.2465 10.5141C17.5845 10.1761 17.5845 9.62816 17.2465 9.29021L13.4965 5.54021C13.1586 5.20226 12.6107 5.20226 12.2727 5.54021C11.9348 5.87816 11.9348 6.4261 12.2727 6.76405L14.5454 9.03675Z" fill="#AAAAAA"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <div class="main-container">
+        <!-- 왼쪽 네비게이션 -->
+        <aside class="nav-sidebar">
+            <div class="nav-content">
+                <div class="nav-menu">
+                    <div class="nav-item">
+                        <div class="nav-icon menu-agent"></div>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon menu-setting"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 중앙 콘텐츠 영역 -->
+        <main class="content-area">
+            <div class="main-content-wrapper">
+                <div class="content-container">
+                <!-- 샘플 양식 다운로드 -->
+                <div class="section">
+                    <h3 class="section-title">샘플 양식 다운로드</h3>
+                    <button class="download-section">
+                        <div class="download-item">
+                            <div class="file-icon"></div>
+                            <span class="file-name">샘플 양식.xlsx</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- 가이드 라인 -->
+                <div class="section">
+                    <h3 class="section-title">가이드 라인</h3>
+                    <div class="guide-content">
+                        <ol class="guide-list">
+                            <li><span>가입 상품명 입력 및 샘플양식에 맞춰 스크립트 파일 업로드</span></li>
+                            <li><span>TTS 유형에서 남성 또는 여성 목소리 선택 후 음성 파일 생성 클릭</span></li>
+                            <li><span>오른편 화면에 약관 스크립트 LIST 생성시 약관 번호 별 음성 파일 각각 확인</span></li>
+                            <li><span>문제 없을 시 등록 클릭</span></li>
+                            <li><span>잘못 된 음성 또는 오류 발생시 삭제 클릭</span></li>
+                            <li><span>파일 수정 후 재 업로드 및 음성 파일 다시 생성</span></li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- 스크립트 파일 업로드 -->
+                <div class="section">
+                    <h3 class="section-title">스크립트 파일 업로드</h3>
+                    <div class="upload-section">
+                        <div class="upload-row">
+                            <label class="upload-label">가입 상품명</label>
+                            <input type="text" class="upload-input" value="간편한가족사랑간병치매보험" readonly>
+                        </div>
+                        <div class="upload-row">
+                            <label class="upload-label">파일 업로드</label>
+                            <div class="upload-controls">
+                                <div class="file-input-wrapper">
+                                    <input type="file" class="file-input-hidden" accept=".xlsx,.xls" id="file-upload">
+                                    <div class="file-input-display">
+                                        <span class="file-input-text">파일을 선택하세요</span>
+                                    </div>
+                                </div>
+                                <button class="upload-btn" type="button">업로드</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TTS 유형 -->
+                <div class="section">
+                    <h3 class="section-title">TTS 유형</h3>
+                    <div class="tts-section">
+                        <div class="tts-options">
+                            <label class="tts-option">
+                                <input type="radio" name="tts-type" value="male">
+                                <span class="radio-mark"></span>
+                                <span class="tts-label">남성</span>
+                            </label>
+                            <label class="tts-option">
+                                <input type="radio" name="tts-type" value="female" checked>
+                                <span class="radio-mark"></span>
+                                <span class="tts-label">여성</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 음성파일 생성 버튼 -->
+                <div class="section">
+                    <button class="generate-btn">
+                        음성파일 생성
+                    </button>
+                </div>
+            </div>
+
+            <!-- 스크립트 리스트 -->
+            <div class="script-list-container">
+                <div class="script-header">
+                    <h3 class="script-title">스크립트 리스트</h3>
+                    <div class="script-actions">
+                        <button class="action-btn">삭제</button>
+                        <button class="action-btn">등록</button>
+                    </div>
+                </div>
+                <div class="script-list">
+                    <div class="script-item">365 간병비플랜(건강)</div>
+                    <div class="script-item">걸을수록 더 좋은 건강보험</div>
+                    <div class="script-item">1040 건강보험</div>
+                    <div class="script-item active">간편한 가족사랑 간병 치매보험</div>
+                    <div class="script-item">유병자 간편건강보험</div>
+                    <div class="script-item">유병자 365간병비 플랜</div>
+                    <div class="script-item">자녀보험</div>
+                    <div class="script-item">치아보험(자녀)</div>
+                    <div class="script-item">유병자 간편 실손보험</div>
+                    <div class="script-item">펫블리반려견보험</div>
+                    <div class="script-item">주택화재보험</div>
+                    <div class="script-item">해외여행보험</div>
+                    <div class="script-item">프리미엄 해외여행보험</div>
+                    <div class="script-item">오잘공 골프 보험(3년)</div>
+                    <div class="script-item">골프보험(1년)</div>
+                    <div class="script-item">실손의료비보험</div>
+                    <div class="script-item">풍수해/지진재해보험</div>
+            </div>
+        </main>
+
+        <!-- 오른쪽 스크립트 패널 -->
+        <aside class="script-panel">
+            <div class="script-content">
+                <h3 class="script-title">간편한 가족사랑 간병 치매보험 스크립트</h3>
+                
+                <div class="script-list">
+                    <div class="script-item">
+                        <span class="script-text">[공통]T청약서부본및 상품설명서</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]약관교부 및 설명</span>
+                        <button class="play-btn paused"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]설명내용 상품설명서 동일확인</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]자필서명여부</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]품질보증해지안내</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]청약철회</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]위법계약해지</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]고지의무위반 알릴의무</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]통지의무</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]보험금지급관련</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">보험료 감액청구권</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]수익자지정</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]승환계약</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[공통]신용정보동의</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">보험료와 환급율차이</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[해지환급금]치매관련-완판안내</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">보상대상질병</span>
+                        <button class="play-btn"></button>
+                    </div>
+                    <div class="script-item">
+                        <span class="script-text">[치매]보장대상질병 -완판안내</span>
+                        <button class="play-btn"></button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>

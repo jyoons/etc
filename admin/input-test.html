@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>커스텀 파일 업로드</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 40px;
+      background: #f9fafb;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #333;
+    }
+
+    /* ───────────────────────────────
+       ① ::file-selector-button 방식
+    ─────────────────────────────── */
+    .file-input-1 {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .file-input-1::file-selector-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #4f46e5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .file-input-1::file-selector-button:hover {
+      background: #4338ca;
+    }
+
+    /* 크롬/사파리 구버전 호환 */
+    .file-input-1::-webkit-file-upload-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #4f46e5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .file-input-1::-webkit-file-upload-button:hover {
+      background: #4338ca;
+    }
+
+    /* ───────────────────────────────
+       ② label 방식 (완전 텍스트 제어 가능)
+    ─────────────────────────────── */
+    .custom-label {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #10b981;
+      color: white;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .custom-label:hover {
+      background: #059669;
+    }
+
+    /* input은 숨김 */
+    #file-input-2 {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>커스텀 파일 업로드 데모</h1>
+
+  <h2>① ::file-selector-button 방식</h2>
+  <input type="file" class="file-input-1" />
+
+  <h2>② label 방식</h2>
+  <label for="file-input-2" class="custom-label">📂 파일 올리기</label>
+  <input type="file" id="file-input-2" />
+</body>
+</html>
