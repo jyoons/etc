@@ -1,99 +1,89 @@
-// DOM이 로드된 후 실행
+/**
+ * 통역 봇 메인 스크립트
+ * 실시간 번역 및 UI 관리
+ */
+
+// ============================================================================
+// 초기화 및 설정
+// ============================================================================
+
+// DOM 로드 후 초기화
 document.addEventListener('DOMContentLoaded', function() {
-    // 언어 선택 기능
     initLanguageSelection();
-    
-    // 통역시작 버튼 기능
     initStartButton();
-    
-    // 스크립트 재생 기능
     initScriptPlayback();
-    
-    // 실시간 시간 업데이트
     initTimeUpdate();
-    
-    // 대화 스크롤 기능
     initChatScroll();
-    
-    // 로그아웃 기능
     initLogout();
 });
 
-// 언어 선택 초기화
-function initLanguageSelection() {
-    const languageCheckboxes = document.querySelectorAll('.language-checkbox');
-    
-    languageCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const isChecked = this.checked;
-            
-            // 다른 언어들 체크 해제 (단일 선택)
-            if (isChecked) {
-                languageCheckboxes.forEach(otherCheckbox => {
-                    if (otherCheckbox !== this) {
-                        otherCheckbox.checked = false;
-                    }
-                });
-            }
-        });
-    });
-}
+// 번역 설정
+const LANGUAGE_CODES = {
+    '영어': 'en',
+    '러시아어': 'ru',
+    '중국어': 'zh',
+    '일본어': 'ja',
+    '베트남어': 'vi'
+};
 
-// 실시간 번역 내용 업데이트
-async function updateTranslations(language) {
+const ORIGINAL_TEXTS = {
+    'bot_message1': '계약 체결 시 서명 미이행의 경우,<br>불법 계약으로 인한 손실이 발생할 수 있습니다.<br>계약 체결 시 피보험자가 직접 서명(자기인증 포함)하셨나요?',
+    'bot_message2': '당사자와 피보험자 간의 다른 계약에 따른 피보험자의 사망을 보장하는 보험은<br>반드시 피보험자의 서면 동의를 받아야 합니다. 이는 동의하지 않는 경우<br>무효 계약에 해당합니다. 피보험자가 직접 서명(자기인증 포함)하셨나요?',
+    'bot_message3': '이해가 안 되시는군요. 그냥 설명드리겠습니다.',
+    'user_message1': '네, 맞습니다.',
+    'user_message2': '아니요, 서명하지 않았습니다.',
+    'user_message3': '이해했습니다.'
+};
+
+// ============================================================================
+// 번역 기능
+// ============================================================================
+
+// 메인 번역 함수
+window.translateText = async function(text, targetLanguage) {
+    return await translateWithAPI(text, targetLanguage);
+};
+
+// API 기반 번역
+async function translateWithAPI(text, targetLanguage) {
     try {
-        // 봇 메시지 번역 업데이트
-        const botTranslationBubbles = document.querySelectorAll('.bot-message .translation-bubble .message-text');
-        for (let i = 0; i < botTranslationBubbles.length; i++) {
-            const bubble = botTranslationBubbles[i];
-            const messageKey = `bot_message${i + 1}`;
-            const originalText = getOriginalText(messageKey);
-            
-            if (originalText) {
-                // 번역 실행
-                const translatedText = await window.translateText(originalText, language);
-                bubble.innerHTML = translatedText;
-            }
+        const targetLangCode = LANGUAGE_CODES[targetLanguage];
+        if (!targetLangCode) {
+            throw new Error(`지원하지 않는 언어: ${targetLanguage}`);
+        }
+
+        const cleanText = text.replace(/<br>/g, ' ').replace(/<[^>]*>/g, '');
+        const encodedText = encodeURIComponent(cleanText);
+        const apiUrl = `https://api.mymemory.translated.net/get?q=${encodedText}&langpair=ko|${targetLangCode}`;
+        
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`API 호출 실패: ${response.status}`);
         }
         
-        // 사용자 메시지 번역 업데이트
-        const userBubbles = document.querySelectorAll('.user-bubble .message-text');
-        for (let i = 0; i < userBubbles.length; i++) {
-            const bubble = userBubbles[i];
-            const messageKey = `user_message${i + 1}`;
-            const originalText = getOriginalText(messageKey);
-            
-            if (originalText) {
-                // 번역 실행
-                const translatedText = await window.translateText(originalText, language);
-                bubble.innerHTML = translatedText;
-            }
+        const result = await response.json();
+        if (result.responseStatus !== 200) {
+            throw new Error(`번역 API 오류: ${result.responseDetails}`);
         }
+        
+        let translatedText = result.responseData.translatedText;
+        
+        // HTML 태그 복원
+        if (text.includes('<br>')) {
+            translatedText = translatedText.replace(/\. /g, '.<br>');
+        }
+        
+        return translatedText;
+        
     } catch (error) {
-        // 번역 업데이트 실패
+        console.warn('API 번역 실패, 기본 번역 사용:', error);
+        return getFallbackTranslation(text, targetLanguage);
     }
 }
 
-// 원본 텍스트 가져오기
-function getOriginalText(messageKey) {
-    const originalTexts = {
-        'bot_message1': '계약 체결 시 서명 미이행의 경우,<br>불법 계약으로 인한 손실이 발생할 수 있습니다.<br>계약 체결 시 피보험자가 직접 서명(자기인증 포함)하셨나요?',
-        'bot_message2': '당사자와 피보험자 간의 다른 계약에 따른 피보험자의 사망을 보장하는 보험은<br>반드시 피보험자의 서면 동의를 받아야 합니다. 이는 동의하지 않는 경우<br>무효 계약에 해당합니다. 피보험자가 직접 서명(자기인증 포함)하셨나요?',
-        'bot_message3': '이해가 안 되시는군요. 그냥 설명드리겠습니다.',
-        'user_message1': '네, 맞습니다.',
-        'user_message2': '아니요, 서명하지 않았습니다.',
-        'user_message3': '이해했습니다.'
-    };
-    return originalTexts[messageKey];
-}
-
-// 실시간 번역 함수 (대체 번역 시스템만 사용)
-window.translateText = async function(text, targetLanguage) {
-    return await fallbackTranslation(text, targetLanguage);
-};
-
-// 대체 번역 함수 (간단한 매핑)
-async function fallbackTranslation(text, targetLanguage) {
+// 기본 번역 (API 실패 시 사용)
+function getFallbackTranslation(text, targetLanguage) {
+    console.log('통역 실패 대체 통역.....')
     const fallbackTranslations = {
         '영어': {
             '계약 체결 시 서명 미이행의 경우,<br>불법 계약으로 인한 손실이 발생할 수 있습니다.<br>계약 체결 시 피보험자가 직접 서명(자기인증 포함)하셨나요?': 'In case of non-execution of signature during contract conclusion,<br>illegal contract may cause losses.<br>Did the insured personally sign (including self-certification) when concluding the contract?',
@@ -138,15 +128,70 @@ async function fallbackTranslation(text, targetLanguage) {
     };
     
     const translations = fallbackTranslations[targetLanguage];
-    if (translations && translations[text]) {
-        return translations[text];
-    }
-    
-    // 매핑이 없으면 원본 텍스트 반환
-    return text;
+    return translations?.[text] || text;
 }
 
-// 통역시작 버튼 초기화
+// 원본 텍스트 가져오기
+function getOriginalText(messageKey) {
+    return ORIGINAL_TEXTS[messageKey];
+}
+
+// 실시간 번역 업데이트
+async function updateTranslations(language) {
+    try {
+        // 봇 메시지 번역
+        const botBubbles = document.querySelectorAll('.bot-message .translation-bubble .message-text');
+        for (let i = 0; i < botBubbles.length; i++) {
+            const bubble = botBubbles[i];
+            const messageKey = `bot_message${i + 1}`;
+            const originalText = getOriginalText(messageKey);
+            
+            if (originalText) {
+                const translatedText = await window.translateText(originalText, language);
+                bubble.innerHTML = translatedText;
+            }
+        }
+        
+        // 사용자 메시지 번역
+        const userBubbles = document.querySelectorAll('.user-bubble .message-text');
+        for (let i = 0; i < userBubbles.length; i++) {
+            const bubble = userBubbles[i];
+            const messageKey = `user_message${i + 1}`;
+            const originalText = getOriginalText(messageKey);
+            
+            if (originalText) {
+                const translatedText = await window.translateText(originalText, language);
+                bubble.innerHTML = translatedText;
+            }
+        }
+    } catch (error) {
+        console.error('번역 업데이트 실패:', error);
+    }
+}
+
+// ============================================================================
+// UI 이벤트 핸들러
+// ============================================================================
+
+// 언어 선택 기능
+function initLanguageSelection() {
+    const languageCheckboxes = document.querySelectorAll('.language-checkbox');
+    
+    languageCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                // 다른 언어 체크 해제 (단일 선택)
+                languageCheckboxes.forEach(otherCheckbox => {
+                    if (otherCheckbox !== this) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+            }
+        });
+    });
+}
+
+// 통역 시작 버튼
 function initStartButton() {
     const startBtn = document.querySelector('.start-btn');
     
@@ -157,7 +202,6 @@ function initStartButton() {
             return;
         }
         
-        // 번역 시스템 시작
         const languageText = selectedLanguage.nextElementSibling.nextElementSibling.textContent;
         
         // 언어 배지 업데이트
@@ -172,7 +216,7 @@ function initStartButton() {
     });
 }
 
-// 스크립트 재생 기능 초기화
+// 스크립트 재생 기능
 function initScriptPlayback() {
     const playButtons = document.querySelectorAll('.play-btn');
     
@@ -180,21 +224,16 @@ function initScriptPlayback() {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
             
-            const scriptItem = this.closest('.script-item');
-            const scriptText = scriptItem.querySelector('.script-text').textContent;
             const isPaused = this.classList.contains('paused');
             
             if (isPaused) {
-                // 일시정지 해제
                 this.classList.remove('paused');
             } else {
-                // 재생 시작
                 this.classList.add('paused');
             }
         });
     });
 }
-
 
 // 실시간 시간 업데이트
 function initTimeUpdate() {
@@ -212,39 +251,28 @@ function initTimeUpdate() {
         chatTime.textContent = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
     
-    // 즉시 업데이트
     updateTime();
-    
-    // 1초마다 업데이트
     setInterval(updateTime, 1000);
 }
-
 
 // 대화 스크롤 기능
 function initChatScroll() {
     const chatMessages = document.querySelector('.chat-messages');
     
-    // 자동 스크롤 함수
     function scrollToBottom() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // 전역 함수로 등록
     window.scrollToBottom = scrollToBottom;
-    
-    // 초기 스크롤
     scrollToBottom();
 }
 
-// 로그아웃 기능 초기화
+// 로그아웃 기능
 function initLogout() {
     const logoutBtn = document.querySelector('.logout-btn');
     
     logoutBtn.addEventListener('click', function() {
         if (confirm('정말 로그아웃 하시겠습니까?')) {
-            // 로그아웃 완료
-            
-            // 로그아웃 시뮬레이션
             setTimeout(() => {
                 window.location.reload();
             }, 1500);
@@ -252,33 +280,24 @@ function initLogout() {
     });
 }
 
-
+// ============================================================================
+// 반응형 및 이벤트 처리
+// ============================================================================
 
 // 창 크기 변경 시 레이아웃 조정
 window.addEventListener('resize', function() {
-    // 반응형 레이아웃 조정
     const mainContainer = document.querySelector('.main-container');
-    const sidebar = document.querySelector('.sidebar');
-    const scriptPanel = document.querySelector('.script-panel');
     
     if (window.innerWidth <= 1024) {
-        // 모바일/태블릿 레이아웃
         mainContainer.style.flexDirection = 'column';
     } else {
-        // 데스크톱 레이아웃
         mainContainer.style.flexDirection = 'row';
     }
 });
 
-// 페이지 가시성 변경 시 처리
+// 페이지 가시성 변경 시 시간 업데이트
 document.addEventListener('visibilitychange', function() {
-    if (document.hidden) {
-        // 페이지가 숨겨졌을 때
-        // 백그라운드로 이동
-    } else {
-        // 페이지가 다시 보일 때
-        // 포그라운드로 돌아옴
-        // 시간 업데이트
+    if (!document.hidden) {
         const chatTime = document.querySelector('.chat-time span');
         if (chatTime) {
             const now = new Date();
