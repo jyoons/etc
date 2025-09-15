@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initTimeUpdate();
     initChatScroll();
     initLogout();
+    hideTranslationBubbles();
 });
 
 // 번역 설정
@@ -29,11 +30,79 @@ const LANGUAGE_CODES = {
 const ORIGINAL_TEXTS = {
     'bot_message1': '계약 체결 시 서명 미이행의 경우,<br>불법 계약으로 인한 손실이 발생할 수 있습니다.<br>계약 체결 시 피보험자가 직접 서명(자기인증 포함)하셨나요?',
     'bot_message2': '당사자와 피보험자 간의 다른 계약에 따른 피보험자의 사망을 보장하는 보험은<br>반드시 피보험자의 서면 동의를 받아야 합니다. 이는 동의하지 않는 경우<br>무효 계약에 해당합니다. 피보험자가 직접 서명(자기인증 포함)하셨나요?',
-    'bot_message3': '이해가 안 되시는군요. 그냥 설명드리겠습니다.',
-    'user_message1': '네, 맞습니다.',
-    'user_message2': '아니요, 서명하지 않았습니다.',
-    'user_message3': '이해했습니다.'
+    'bot_message3': '이해가 안 되시는군요. 그냥 설명드리겠습니다.'
 };
+
+// 사용자 메시지의 기본 외국어 텍스트
+const USER_FOREIGN_TEXTS = {
+    '영어': {
+        'user_message1': 'Yes, that\'s right.',
+        'user_message2': 'I don\'t understand.',
+        'user_message3': 'I understand.'
+    },
+    '러시아어': {
+        'user_message1': 'Да, верно.',
+        'user_message2': 'Я не понимаю.',
+        'user_message3': 'Понятно.'
+    },
+    '중국어': {
+        'user_message1': '是的，没错。',
+        'user_message2': '我不明白。',
+        'user_message3': '我明白了。'
+    },
+    '일본어': {
+        'user_message1': 'はい、その通りです。',
+        'user_message2': 'わかりません。',
+        'user_message3': '理解しました。'
+    },
+    '베트남어': {
+        'user_message1': 'Vâng, đúng vậy.',
+        'user_message2': 'Tôi không hiểu.',
+        'user_message3': 'Tôi hiểu rồi.'
+    }
+};
+
+// ============================================================================
+// 타이핑 애니메이션 기능
+// ============================================================================
+
+// 번역 버블 숨기기 함수
+function hideTranslationBubbles() {
+    const translationBubbles = document.querySelectorAll('.translation-bubble');
+    translationBubbles.forEach(bubble => {
+        bubble.style.display = 'none';
+    });
+}
+
+// 번역 버블 보이기 함수
+function showTranslationBubble(bubble) {
+    bubble.style.display = 'block';
+}
+
+// 타이핑 애니메이션 함수 (기존 텍스트 유지)
+function typewriterEffect(element, text, speed = 50) {
+    return new Promise((resolve) => {
+        // 기존 텍스트를 지우지 않고 새 텍스트를 추가
+        let i = 0;
+        
+        function typeChar() {
+            if (i < text.length) {
+                if (text.substring(i, i + 4) === '<br>') {
+                    element.innerHTML += '<br>';
+                    i += 4;
+                } else {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                }
+                setTimeout(typeChar, speed);
+            } else {
+                resolve();
+            }
+        }
+        
+        typeChar();
+    });
+}
 
 // ============================================================================
 // 번역 기능
@@ -136,32 +205,136 @@ function getOriginalText(messageKey) {
     return ORIGINAL_TEXTS[messageKey];
 }
 
-// 실시간 번역 업데이트
-async function updateTranslations(language) {
+// 사용자 외국어 텍스트 가져오기
+function getUserForeignText(messageKey, language) {
+    return USER_FOREIGN_TEXTS[language]?.[messageKey];
+}
+
+// 외국어를 한국어로 번역하는 함수
+async function translateToKorean(text, fromLanguage) {
     try {
-        // 봇 메시지 번역
-        const botBubbles = document.querySelectorAll('.bot-message .translation-bubble .message-text');
-        for (let i = 0; i < botBubbles.length; i++) {
-            const bubble = botBubbles[i];
-            const messageKey = `bot_message${i + 1}`;
-            const originalText = getOriginalText(messageKey);
-            
-            if (originalText) {
-                const translatedText = await window.translateText(originalText, language);
-                bubble.innerHTML = translatedText;
-            }
+        const fromLangCode = LANGUAGE_CODES[fromLanguage];
+        if (!fromLangCode) {
+            throw new Error(`지원하지 않는 언어: ${fromLanguage}`);
+        }
+
+        const cleanText = text.replace(/<br>/g, ' ').replace(/<[^>]*>/g, '');
+        const encodedText = encodeURIComponent(cleanText);
+        const apiUrl = `https://api.mymemory.translated.net/get?q=${encodedText}&langpair=${fromLangCode}|ko`;
+        
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`API 호출 실패: ${response.status}`);
         }
         
-        // 사용자 메시지 번역
+        const result = await response.json();
+        if (result.responseStatus !== 200) {
+            throw new Error(`번역 API 오류: ${result.responseDetails}`);
+        }
+        
+        let translatedText = result.responseData.translatedText;
+        
+        // HTML 태그 복원
+        if (text.includes('<br>')) {
+            translatedText = translatedText.replace(/\. /g, '.<br>');
+        }
+        
+        return translatedText;
+        
+    } catch (error) {
+        console.warn('API 번역 실패, 기본 번역 사용:', error);
+        return getFallbackTranslationToKorean(text, fromLanguage);
+    }
+}
+
+// 외국어 → 한국어 기본 번역 (API 실패 시)
+function getFallbackTranslationToKorean(text, fromLanguage) {
+    const fallbackTranslations = {
+        '영어': {
+            'Yes, that\'s right.': '네, 맞습니다.',
+            'I don\'t understand.': '무슨 말인지 잘 모르겠어요.',
+            'I understand.': '이해했습니다.'
+        },
+        '러시아어': {
+            'Да, верно.': '네, 맞습니다.',
+            'Я не понимаю.': '무슨 말인지 잘 모르겠어요.',
+            'Понятно.': '이해했습니다.'
+        },
+        '중국어': {
+            '是的，没错。': '네, 맞습니다.',
+            '我不明白。': '무슨 말인지 잘 모르겠어요.',
+            '我明白了。': '이해했습니다.'
+        },
+        '일본어': {
+            'はい、その通りです。': '네, 맞습니다.',
+            'わかりません。': '무슨 말인지 잘 모르겠어요.',
+            '理解しました。': '이해했습니다.'
+        },
+        '베트남어': {
+            'Vâng, đúng vậy.': '네, 맞습니다.',
+            'Tôi không hiểu.': '무슨 말인지 잘 모르겠어요.',
+            'Tôi hiểu rồi.': '이해했습니다.'
+        }
+    };
+    
+    const translations = fallbackTranslations[fromLanguage];
+    return translations?.[text] || text;
+}
+
+// 실시간 번역 업데이트 (타이핑 애니메이션 포함)
+async function updateTranslations(language) {
+    try {
+        // 0. 모든 번역 버블 초기화 (이전 언어 내용 지우기)
+        const allTranslationBubbles = document.querySelectorAll('.translation-bubble .message-text');
+        allTranslationBubbles.forEach(bubble => {
+            bubble.innerHTML = '';
+        });
+        
+        // 1. 사용자 메시지 원본을 선택된 언어로 변경
         const userBubbles = document.querySelectorAll('.user-bubble .message-text');
         for (let i = 0; i < userBubbles.length; i++) {
             const bubble = userBubbles[i];
             const messageKey = `user_message${i + 1}`;
-            const originalText = getOriginalText(messageKey);
+            const foreignText = getUserForeignText(messageKey, language);
             
-            if (originalText) {
-                const translatedText = await window.translateText(originalText, language);
-                bubble.innerHTML = translatedText;
+            if (foreignText) {
+                bubble.innerHTML = foreignText;
+            }
+        }
+        
+        // 2. 모든 번역 버블을 순차적으로 처리
+        const allMessageGroups = document.querySelectorAll('.message-group');
+        
+        for (let i = 0; i < allMessageGroups.length; i++) {
+            const messageGroup = allMessageGroups[i];
+            const translationBubbleContainer = messageGroup.querySelector('.translation-bubble');
+            const translationBubble = messageGroup.querySelector('.translation-bubble .message-text');
+            
+            if (translationBubble && translationBubbleContainer) {
+                // 번역 버블 보이기
+                showTranslationBubble(translationBubbleContainer);
+                
+                if (messageGroup.classList.contains('bot-message')) {
+                    // 봇 메시지: 한국어 → 선택된 언어로 번역
+                    const messageIndex = Math.floor(i / 2) + 1; // 봇 메시지 인덱스 계산
+                    const messageKey = `bot_message${messageIndex}`;
+                    const originalText = getOriginalText(messageKey);
+                    
+                    if (originalText) {
+                        const translatedText = await window.translateText(originalText, language);
+                        await typewriterEffect(translationBubble, translatedText, 30);
+                    }
+                } else if (messageGroup.classList.contains('user-message')) {
+                    // 사용자 메시지: 외국어 → 한국어로 번역
+                    const messageIndex = Math.floor((i + 1) / 2); // 사용자 메시지 인덱스 계산
+                    const messageKey = `user_message${messageIndex}`;
+                    const foreignText = getUserForeignText(messageKey, language);
+                    
+                    if (foreignText) {
+                        const translatedText = await translateToKorean(foreignText, language);
+                        await typewriterEffect(translationBubble, translatedText, 30);
+                    }
+                }
             }
         }
     } catch (error) {
@@ -218,21 +391,18 @@ function initStartButton() {
 
 // 스크립트 재생 기능
 function initScriptPlayback() {
-    const playButtons = document.querySelectorAll('.play-btn');
-    
-    playButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            const isPaused = this.classList.contains('paused');
-            
-            if (isPaused) {
-                this.classList.remove('paused');
-            } else {
-                this.classList.add('paused');
-            }
-        });
+  const playButtons = document.querySelectorAll('.play-btn');
+  playButtons.forEach(btn => {
+  	btn.addEventListener('click', function(e) {
+    	e.stopPropagation();            
+			const isPaused = this.classList.contains('paused');
+			if (isPaused) {
+					this.classList.remove('paused');
+			} else {
+					this.classList.add('paused');
+			}
     });
+  });
 }
 
 // 실시간 시간 업데이트
