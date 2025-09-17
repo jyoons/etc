@@ -58,11 +58,24 @@
 
 	/* Mobile responsive */
 	@media (max-width: 768px) {
-		/* .flexible-area{grid-template-columns: 1fr !important; grid-template-rows: 1fr auto 1fr;}
-		.grip{height:8px; width:100%; cursor:row-resize;}
+		.grip{
+			height:40px;
+			cursor:row-resize;
+			background:#f00;
+			position:relative;
+			display:flex;
+			align-items:center;
+			justify-content:center;
+		}
+		.grip::before{
+			content:"⋮⋮⋮";
+			color:#fff;
+			font-size:20px;
+			letter-spacing:4px;
+		}
 		.col{min-height:200px;}
-		.resize-v{height:8px;}
-		.sortable-item .sortable-header{padding:12px; font-size:16px;} */
+		.resize-v{height:20px; background:#ddd;}
+		.sortable-item .sortable-header{padding:12px; font-size:16px;}
 	}
 </style>
 </head>
@@ -119,11 +132,11 @@
 <script>
 (() => {
   // Global variables
-  const box  = document.getElementById('flexArea');
+  const box = document.getElementById('flexArea');
   const grip = document.getElementById('grip');
   const colL = document.getElementById('colL');
   const colR = document.getElementById('colR');
-  const KEY  = 'persistedLayout:v1';
+  const KEY = 'persistedLayout:v1';
   const gripW = () => grip.getBoundingClientRect().width || 8;
 
   // Touch event utilities
@@ -312,15 +325,18 @@
 
   // Initialize column resize (horizontal)
   function initColumnResize() {
-    let gripActive=false, startX=0, leftW=0, rightW=0;
+    let gripActive = false, startX = 0, startY = 0, leftW = 0, rightW = 0;
 
     function onGripDown(e){
       e.preventDefault();
       gripActive = true;
       const pos = getEventPos(e);
+
+      // Always use horizontal resize (no layout change)
       startX = pos.clientX;
-      leftW  = colL.getBoundingClientRect().width;
+      leftW = colL.getBoundingClientRect().width;
       rightW = colR.getBoundingClientRect().width;
+
       document.body.classList.add('no-select');
 
       // Add both pointer and touch events
@@ -334,24 +350,22 @@
       if(!gripActive) return;
       e.preventDefault();
       const pos = getEventPos(e);
+
+      // Always use horizontal resize (no layout change)
       const dx = pos.clientX - startX;
-
-      if(isMobile()) {
-        // Mobile: vertical layout adjustment
-        return;
-      }
-
       const minCol = 180;
-      const total  = box.getBoundingClientRect().width;
-      const gW     = gripW();
-      let newLeft  = Math.max(minCol, Math.min(leftW + dx, total - gW - minCol));
+      const total = box.getBoundingClientRect().width;
+      const gW = gripW();
+      let newLeft = Math.max(minCol, Math.min(leftW + dx, total - gW - minCol));
       let newRight = total - gW - newLeft;
-      box.style.gridTemplateColumns = `${newLeft}px ${gW}px ${newRight}px`;
+
+      box.style.setProperty('grid-template-columns', `${newLeft}px ${gW}px ${newRight}px`, 'important');
     }
 
     function onGripUp(){
       gripActive = false;
       document.body.classList.remove('no-select');
+
       window.removeEventListener('pointermove', onGripMove);
       window.removeEventListener('pointerup', onGripUp);
       window.removeEventListener('touchmove', onGripMove);
@@ -366,7 +380,7 @@
 
   // Initialize vertical resize
   function initVerticalResize() {
-    let activeTop=null, startY=0, startTopH=0, colH=0;
+    let activeTop = null, startY = 0, startTopH = 0, colH = 0;
 
     function onVDown(e){
       e.preventDefault();
@@ -377,9 +391,9 @@
 
       activeTop = { topCard, botCard, col };
       const pos = getEventPos(e);
-      startY     = pos.clientY;
-      startTopH  = topCard.offsetHeight;
-      colH       = col.clientHeight;
+      startY = pos.clientY;
+      startTopH = topCard.offsetHeight;
+      colH = col.clientHeight;
 
       document.body.classList.add('no-select');
       window.addEventListener('pointermove', onVMove);
@@ -423,7 +437,7 @@
 
   function saveLayout(){
     const total = box.getBoundingClientRect().width;
-    const leftW  = colL.getBoundingClientRect().width;
+    const leftW = colL.getBoundingClientRect().width;
     const rightW = colR.getBoundingClientRect().width;
     const leftRatio = leftW / (leftW + rightW);
 
@@ -432,8 +446,8 @@
 
     const Lsum = (Lcards[0]?.offsetHeight || 0) + (Lcards[1]?.offsetHeight || 0);
     const Rsum = (Rcards[0]?.offsetHeight || 0) + (Rcards[1]?.offsetHeight || 0);
-    const LtopRatio = Lsum ? (Lcards[0].offsetHeight / Lsum) : 0.5;
-    const RtopRatio = Rsum ? (Rcards[0].offsetHeight / Rsum) : 0.5;
+    const LtopRatio = Lsum ? (Lcards[0]?.offsetHeight / Lsum) : 0.5;
+    const RtopRatio = Rsum ? (Rcards[0]?.offsetHeight / Rsum) : 0.5;
 
     const data = { leftRatio, LtopRatio, RtopRatio };
     localStorage.setItem(KEY, JSON.stringify(data));
@@ -447,9 +461,9 @@
 
     // 열 폭 복원
     const total = box.getBoundingClientRect().width;
-    const gW    = gripW();
+    const gW = gripW();
     const usable = total - gW;
-    const leftPx  = Math.max(180, Math.min(usable - 180, Math.round(usable * (data.leftRatio ?? 0.5))));
+    const leftPx = Math.max(180, Math.min(usable - 180, Math.round(usable * (data.leftRatio ?? 0.5))));
     const rightPx = usable - leftPx;
     box.style.gridTemplateColumns = `${leftPx}px ${gW}px ${rightPx}px`;
 
@@ -481,9 +495,9 @@
     try { data = JSON.parse(raw); } catch { return; }
     // 열
     const total = box.getBoundingClientRect().width;
-    const gW    = gripW();
+    const gW = gripW();
     const usable = total - gW;
-    const leftPx  = Math.max(180, Math.min(usable - 180, Math.round(usable * (data.leftRatio ?? 0.5))));
+    const leftPx = Math.max(180, Math.min(usable - 180, Math.round(usable * (data.leftRatio ?? 0.5))));
     const rightPx = usable - leftPx;
     box.style.gridTemplateColumns = `${leftPx}px ${gW}px ${rightPx}px`;
     // 카드
@@ -504,7 +518,7 @@
 
   let t;
   window.addEventListener('resize', () => {
-    clearTimeout(t); 
+    clearTimeout(t);
     t = setTimeout(reapplyOnResize, 50);
   });
 
