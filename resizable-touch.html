@@ -115,6 +115,7 @@
 </div>
 <script src="js/jquery-3.7.1.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 <script>
 (() => {
   // Global variables
@@ -148,8 +149,159 @@
       tolerance: "pointer",
       scroll: true,
       scrollSensitivity: 40,
-      scrollSpeed: 40
+      scrollSpeed: 40,
+      start: function(event, ui) {
+        // 모바일에서 드래그 시작 시 스타일 조정
+        if(isMobile()) {
+          ui.helper.css({
+            'pointer-events': 'none',
+            'transform': 'scale(1.05)',
+            'z-index': '99999'
+          });
+        }
+      },
+      stop: function(event, ui) {
+        // 드래그 종료 시 스타일 복구
+        if(isMobile()) {
+          ui.item.css({
+            'transform': '',
+            'z-index': ''
+          });
+        }
+      }
     });
+
+    // 모바일 터치 지원을 위한 추가 이벤트 핸들링
+    if(isMobile()) {
+      enableMobileSortable();
+    }
+  }
+
+  // 모바일 sortable 터치 지원
+  function enableMobileSortable() {
+    let isDragging = false;
+    let dragElement = null;
+    let placeholder = null;
+    let startPos = null;
+
+    $(".sortable-header").on("touchstart", function(e) {
+      const touch = e.originalEvent.touches[0];
+      const $item = $(this).closest(".sortable-item");
+
+      isDragging = false;
+      dragElement = $item[0];
+      startPos = { x: touch.clientX, y: touch.clientY };
+
+      e.preventDefault();
+    });
+
+    $(document).on("touchmove", function(e) {
+      if (!dragElement) return;
+
+      const touch = e.originalEvent.touches[0];
+      const deltaX = Math.abs(touch.clientX - startPos.x);
+      const deltaY = Math.abs(touch.clientY - startPos.y);
+
+      if (!isDragging && (deltaX > 10 || deltaY > 10)) {
+        isDragging = true;
+        startMobileDrag(dragElement, touch);
+      }
+
+      if (isDragging) {
+        updateMobileDrag(touch);
+        e.preventDefault();
+      }
+    });
+
+    $(document).on("touchend", function(e) {
+      if (isDragging) {
+        endMobileDrag();
+      }
+      dragElement = null;
+      isDragging = false;
+      startPos = null;
+    });
+
+    function startMobileDrag(element, touch) {
+      const $element = $(element);
+
+      // Create placeholder
+      placeholder = $('<div class="sortable-placeholder">').css({
+        height: $element.outerHeight(),
+        margin: $element.css('margin'),
+        border: '2px dashed #ccc',
+        background: '#f9f9f9'
+      });
+
+      $element.after(placeholder);
+
+      // Style dragging element
+      $element.css({
+        position: 'fixed',
+        zIndex: 99999,
+        opacity: 0.8,
+        transform: 'scale(1.05)',
+        pointerEvents: 'none',
+        left: touch.clientX - $element.outerWidth() / 2,
+        top: touch.clientY - $element.outerHeight() / 2
+      });
+    }
+
+    function updateMobileDrag(touch) {
+      if (!dragElement) return;
+
+      const $element = $(dragElement);
+
+      // Update position
+      $element.css({
+        left: touch.clientX - $element.outerWidth() / 2,
+        top: touch.clientY - $element.outerHeight() / 2
+      });
+
+      // Find drop target
+      const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+      const $column = $(elementBelow).closest('.column');
+
+      if ($column.length > 0) {
+        const $items = $column.find('.sortable-item').not(dragElement);
+        let insertAfter = null;
+
+        $items.each(function() {
+          const rect = this.getBoundingClientRect();
+          if (touch.clientY < rect.top + rect.height / 2) {
+            return false; // break
+          }
+          insertAfter = this;
+        });
+
+        if (insertAfter) {
+          $(insertAfter).after(placeholder);
+        } else {
+          $column.prepend(placeholder);
+        }
+      }
+    }
+
+    function endMobileDrag() {
+      if (!dragElement || !placeholder) return;
+
+      const $element = $(dragElement);
+
+      // Reset styles
+      $element.css({
+        position: '',
+        zIndex: '',
+        opacity: '',
+        transform: '',
+        pointerEvents: '',
+        left: '',
+        top: ''
+      });
+
+      // Move element to placeholder position
+      placeholder.replaceWith($element);
+      placeholder = null;
+    }
   }
 
   // Initialize resizable functionality
