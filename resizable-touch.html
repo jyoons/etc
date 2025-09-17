@@ -53,14 +53,13 @@
 	.sortable-item{border:1px solid #555;}
 	.sortable-item .sortable-header{background:#CCC; cursor:move; touch-action:none;}
 	.sortable-item + .sortable-item{margin-top:10px;}
-	.grip{touch-action:none;}
-	.resize-v{touch-action:none;}
+	.grip{touch-action:none; -webkit-touch-callout:none; -webkit-user-select:none;}
+	.resize-v{touch-action:none; -webkit-touch-callout:none;}
 
 	/* Mobile responsive */
 	@media (max-width: 768px) {
 		.grip{
-            width:20px;
-			height:100px;
+			height:40px;
 			cursor:row-resize;
 			background:#f00;
 			position:relative;
@@ -330,6 +329,7 @@
 
     function onGripDown(e){
       e.preventDefault();
+      console.log('Grip down:', e.type, 'isMobile:', isMobile());
       gripActive = true;
       const pos = getEventPos(e);
 
@@ -338,13 +338,21 @@
       leftW = colL.getBoundingClientRect().width;
       rightW = colR.getBoundingClientRect().width;
 
+      console.log('Grip start values:', {startX, leftW, rightW});
+
       document.body.classList.add('no-select');
 
-      // Add both pointer and touch events
-      window.addEventListener('pointermove', onGripMove);
-      window.addEventListener('pointerup', onGripUp);
-      window.addEventListener('touchmove', onGripMove, {passive: false});
-      window.addEventListener('touchend', onGripUp);
+      if (isMobile()) {
+        // 모바일에서는 터치 이벤트만 사용
+        window.addEventListener('touchmove', onGripMove, {passive: false});
+        window.addEventListener('touchend', onGripUp);
+      } else {
+        // 데스크톱에서는 pointer/mouse 이벤트 사용
+        window.addEventListener('pointermove', onGripMove);
+        window.addEventListener('pointerup', onGripUp);
+        window.addEventListener('mousemove', onGripMove);
+        window.addEventListener('mouseup', onGripUp);
+      }
     }
 
     function onGripMove(e){
@@ -360,23 +368,54 @@
       let newLeft = Math.max(minCol, Math.min(leftW + dx, total - gW - minCol));
       let newRight = total - gW - newLeft;
 
+      console.log('Grip move:', {dx, newLeft, newRight, total});
       box.style.setProperty('grid-template-columns', `${newLeft}px ${gW}px ${newRight}px`, 'important');
     }
 
     function onGripUp(){
+      console.log('Grip up');
       gripActive = false;
       document.body.classList.remove('no-select');
 
-      window.removeEventListener('pointermove', onGripMove);
-      window.removeEventListener('pointerup', onGripUp);
-      window.removeEventListener('touchmove', onGripMove);
-      window.removeEventListener('touchend', onGripUp);
+      if (isMobile()) {
+        window.removeEventListener('touchmove', onGripMove);
+        window.removeEventListener('touchend', onGripUp);
+      } else {
+        window.removeEventListener('pointermove', onGripMove);
+        window.removeEventListener('pointerup', onGripUp);
+        window.removeEventListener('mousemove', onGripMove);
+        window.removeEventListener('mouseup', onGripUp);
+      }
       saveLayout();
     }
 
     // Add both pointer and touch events
-    grip.addEventListener('pointerdown', onGripDown);
-    grip.addEventListener('touchstart', onGripDown, {passive: false});
+    if (isMobile()) {
+      // 모바일에서는 터치 이벤트만 사용
+      grip.addEventListener('touchstart', onGripDown, {passive: false});
+
+      // 추가 모바일 전용 터치 핸들러
+      grip.addEventListener('touchstart', function(e) {
+        console.log('Direct mobile touch on grip');
+        grip.style.background = '#00f'; // 파란색으로 변경
+        setTimeout(() => grip.style.background = '', 100);
+      }, {passive: false});
+
+      console.log('Mobile grip touch events added');
+    } else {
+      // 데스크톱에서는 pointer 이벤트 사용
+      grip.addEventListener('pointerdown', onGripDown);
+      grip.addEventListener('mousedown', onGripDown); // fallback
+    }
+
+    // 강제로 모든 이벤트 추가 (디버깅용)
+    grip.addEventListener('click', (e) => {
+      console.log('Grip clicked!', e.type);
+    });
+
+    grip.addEventListener('touchstart', (e) => {
+      console.log('Raw touchstart on grip');
+    }, {passive: true});
   }
 
   // Initialize vertical resize
