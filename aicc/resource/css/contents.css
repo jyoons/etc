@@ -34,7 +34,7 @@
 .chart-area-multi .donutChart-box{width:50%;}
 /* select custom */
 .select-field{height:28px; color:var(--color-text-gray); border:1px solid var(--color-border-color3); border-radius:4px;}
-.select{width:100%; height:100%; color:inherit; white-space: nowrap; text-overflow: ellipsis; padding:0 30px 0 10px; border:0; appearance: none; background:url('/resource/images/ico-select-arrow.svg') calc(100% - 10px) center no-repeat; background-size: 8px 4px; outline: none;}
+.select{width:100%; height:100%; color:inherit; white-space: nowrap; text-overflow: ellipsis; padding:0 30px 0 10px; border:0; appearance: none; background:url('../images/ico-select-arrow.svg') calc(100% - 10px) center no-repeat; background-size: 8px 4px; outline: none;}
 /* grid table */
 .wrapper .dx-grid-custom {font-size:12px; width:100%; height:150px;}
 .dx-grid-custom .dx-datagrid .dx-column-lines>td { border-left:0; border-right:0;}
