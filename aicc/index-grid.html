@@ -369,8 +369,41 @@
   // 전역에서 접근 가능하도록 등록
   window.resetGridLayout = resetGridLayout;
 
+  // 픽셀 값을 퍼센트로 변환하는 함수
+  function convertPxToPercent() {
+    document.querySelectorAll('.grid-area').forEach(area => {
+      const parent = area.parentElement;
+      if (!parent) return;
+
+      // 가로 너비 처리
+      if (area.style.width && area.style.width.includes('px')) {
+        const widthPx = parseFloat(area.style.width);
+        const parentWidth = parent.clientWidth;
+        if (parentWidth > 0) {
+          const widthPercent = (widthPx / parentWidth) * 100;
+          area.style.width = Math.min(widthPercent, 100) + '%';
+        }
+      }
+
+      // 세로 높이 처리
+      if (area.style.height && area.style.height.includes('px')) {
+        const heightPx = parseFloat(area.style.height);
+        const parentHeight = parent.clientHeight;
+        if (parentHeight > 0) {
+          const heightPercent = (heightPx / parentHeight) * 100;
+          area.style.height = Math.min(heightPercent, 100) + '%';
+        }
+      }
+    });
+  }
+
   // 페이지 로드 시 저장된 레이아웃 적용
   loadGridLayout();
+
+  // 초기 픽셀→퍼센트 변환 (DOM 로드 후 약간의 지연)
+  setTimeout(() => {
+    convertPxToPercent();
+  }, 100);
 
   if (grip) {
     grip.addEventListener('pointerdown', onGripDown);
@@ -491,6 +524,10 @@
 
   /* (옵션) 창 크기 바뀌면 열 높이에 맞춰 두 카드 합을 보정 */
   window.addEventListener('resize', () => {
+    // 공통 함수 사용
+    convertPxToPercent();
+
+    // 기존 높이 보정 로직
     const cols = ['.grid-row.row-1', '.grid-row.row-2'];
     cols.forEach(className => {
       const col = document.querySelector(className);
