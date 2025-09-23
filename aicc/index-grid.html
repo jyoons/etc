@@ -266,6 +266,48 @@
 
   let gripActive=false, startY=0, topH=0, bottomH=0, gripH=0;
 
+  // 저장된 그리드 레이아웃 불러오기
+  function loadGridLayout() {
+    const savedLayout = localStorage.getItem('gridLayout');
+    if (savedLayout) {
+      const layout = JSON.parse(savedLayout);
+      if (layout.gridTemplateRows) {
+        box.style.gridTemplateRows = layout.gridTemplateRows;
+      }
+      // 가로 카드 크기 복원
+      if (layout.cardSizes) {
+        layout.cardSizes.forEach((size, index) => {
+          const gridAreas = document.querySelectorAll('.grid-area');
+          if (gridAreas[index] && size.width) {
+            gridAreas[index].style.width = size.width;
+            gridAreas[index].style.flex = 'none';
+          }
+          if (gridAreas[index] && size.height) {
+            gridAreas[index].style.height = size.height;
+            gridAreas[index].style.flex = 'none';
+          }
+        });
+      }
+    }
+  }
+
+  // 그리드 레이아웃 저장
+  function saveGridLayout() {
+    const cardSizes = [];
+    document.querySelectorAll('.grid-area').forEach(area => {
+      cardSizes.push({
+        width: area.style.width,
+        height: area.style.height
+      });
+    });
+
+    const layout = {
+      gridTemplateRows: box.style.gridTemplateRows,
+      cardSizes: cardSizes
+    };
+    localStorage.setItem('gridLayout', JSON.stringify(layout));
+  }
+
   function onGripDown(e){
     gripActive = true;
     startY = e.clientY;
@@ -323,7 +365,29 @@
         }
       }
     }
+
+    // 레이아웃 저장
+    saveGridLayout();
   }
+
+  // 레이아웃 리셋 함수
+  function resetGridLayout() {
+    localStorage.removeItem('gridLayout');
+    // 기본 스타일로 리셋
+    box.style.gridTemplateRows = '';
+    document.querySelectorAll('.grid-area').forEach(area => {
+      area.style.width = '';
+      area.style.height = '';
+      area.style.flex = '';
+    });
+    console.log('그리드 레이아웃이 기본값으로 리셋되었습니다.');
+  }
+
+  // 전역에서 접근 가능하도록 등록
+  window.resetGridLayout = resetGridLayout;
+
+  // 페이지 로드 시 저장된 레이아웃 적용
+  loadGridLayout();
 
   if (grip) {
     grip.addEventListener('pointerdown', onGripDown);
@@ -374,6 +438,9 @@
     document.body.style.overflow = '';
     window.removeEventListener('pointermove', onVMove);
     window.removeEventListener('pointerup', onVUp);
+
+    // 레이아웃 저장
+    saveGridLayout();
   }
 
   // 위/아래 경계 리사이저(=위 카드의 바)만 동작
@@ -458,6 +525,9 @@
         }
       }
     }
+
+    // 레이아웃 저장
+    saveGridLayout();
   }
 
   // 좌/우 경계 리사이저(=좌 카드의 바)만 동작
