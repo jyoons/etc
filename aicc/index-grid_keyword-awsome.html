@@ -9,9 +9,7 @@
   <script src="resource/js/ui-common.js"></script>
 	<link rel="stylesheet" type="text/css" href="resource/devEx/css/dx.light.css"/>
   <script type="text/javascript" src="resource/devEx/js/dx.all.js"></script>
-	<!-- <script type="text/javascript" src="resource/js/plugins/jquery.awesomeCloud-0.2.js"></script> -->
-	   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-wordcloud@4/build/index.umd.min.js"></script>
+	<script type="text/javascript" src="resource/js/plugins/jquery.awesomeCloud-0.2.js"></script>
 </head>
 <body>
   <div class="wrapper">
@@ -77,12 +75,12 @@
 					<div class="conts-area-wrap flexible-area" style="grid-template-rows: 0.8fr 10px 1.2fr;">
 						<!-- grid left -->
 						<div class="grid-row row-1">
-							<div class="grid-area" style="flex:0 0 30%;">
+							<div class="grid-area keyword" style="flex:0 0 30%;">
 								<div class="grid-conts" style="overflow:hidden;">
 									<div class="conTit">고객 이슈 키워드 Cloude</div>
 									<div class="grid-conts-inner" style="padding:5% 10%;">
 										<div class="keyword-wrap">
-        							<canvas class="keyword-area"></canvas>
+        							<div class="keyword-area"></div>
       							</div>
 									</div>
 								</div>
@@ -348,6 +346,25 @@
     window.removeEventListener('pointermove', onGripMove);
     window.removeEventListener('pointerup', onGripUp);
 
+    // 키워드 영역이 있는 grid-area만 체크
+    const keywordGridArea = document.querySelector('.grid-area.keyword');
+    if (keywordGridArea && typeof keyword !== 'undefined') {
+      const keywordArea = keywordGridArea.querySelector('.keyword-area');
+      if (keywordArea) {
+        const currentWidth = keywordArea.offsetWidth;
+        const currentHeight = keywordArea.offsetHeight;
+
+        if (!keywordArea._lastWidth || !keywordArea._lastHeight ||
+            keywordArea._lastWidth !== currentWidth || keywordArea._lastHeight !== currentHeight) {
+          keywordArea._lastWidth = currentWidth;
+          keywordArea._lastHeight = currentHeight;
+
+          setTimeout(() => {
+            keyword.renderCloud();
+          }, 100);
+        }
+      }
+    }
 
     // 레이아웃 저장
     saveGridLayout();
@@ -475,11 +492,39 @@
   }
 
   function onHUp(){
+    // 키워드 영역이 변경되었는지 미리 확인
+    let keywordAffected = false;
+    const keywordGridArea = document.querySelector('.grid-area.keyword');
+
+    if (activeLeft && keywordGridArea) {
+      keywordAffected = activeLeft.leftCard.classList.contains('keyword') ||
+                       activeLeft.rightCard.classList.contains('keyword');
+    }
+
     activeLeft = null;
     document.body.classList.remove('no-select');
     document.body.style.overflow = '';
     window.removeEventListener('pointermove', onHMove);
     window.removeEventListener('pointerup', onHUp);
+
+    // 키워드 영역이 영향받은 경우만 재렌더링
+    if (keywordAffected && typeof keyword !== 'undefined') {
+      const keywordArea = keywordGridArea.querySelector('.keyword-area');
+      if (keywordArea) {
+        const currentWidth = keywordArea.offsetWidth;
+        const currentHeight = keywordArea.offsetHeight;
+
+        if (!keywordArea._lastWidth || !keywordArea._lastHeight ||
+            keywordArea._lastWidth !== currentWidth || keywordArea._lastHeight !== currentHeight) {
+          keywordArea._lastWidth = currentWidth;
+          keywordArea._lastHeight = currentHeight;
+
+          setTimeout(() => {
+            keyword.renderCloud();
+          }, 10);
+        }
+      }
+    }
 
     // 레이아웃 저장
     saveGridLayout();
@@ -491,10 +536,8 @@
 
   /* (옵션) 창 크기 바뀌면 열 높이에 맞춰 두 카드 합을 보정 */
   window.addEventListener('resize', () => {
-    const cols = ['.grid-row.row-1', '.grid-row.row-2'];
-    cols.forEach(className => {
+     cols.forEach(className => {
       const col = document.querySelector(className);
-      if (!col) return;
       const cards = col.querySelectorAll('.grid-area');
       if(cards.length !== 2) return;
       const h0 = cards[0].offsetHeight, h1 = cards[1].offsetHeight;
@@ -511,86 +554,73 @@
 })();
 </script>
 <script>
-const words = [
-  { key: "워드클라우드", value: 10 },
-  { key: "AI",           value: 9 },
-  { key: "텍스트",        value: 8 },
-  { key: "분석",          value: 8 },
-  { key: "자연어",        value: 7 },
-  { key: "딥러닝",        value: 7 },
-  { key: "데이터",        value: 6 },
-  { key: "검색",          value: 6 },
-  { key: "모델",          value: 5 },
-  { key: "NLP",          value: 5 },
-  { key: "시각화",        value: 5 },
-  { key: "정규화",        value: 4 },
-  { key: "감성",          value: 4 },
-  { key: "추천",          value: 4 },
-  { key: "전처리",        value: 3 },
-  { key: "라벨링",        value: 3 },
-  { key: "패턴",          value: 3 },
-  { key: "파이프라인",    value: 2 },
-  { key: "토큰화",        value: 2 },
-  { key: "형태소",        value: 2 },
-  { key: "불용어",        value: 2 },
-  { key: "어간추출",      value: 2 },
-  { key: "감정분석",      value: 2 },
-  { key: "군집화",        value: 2 },
-  { key: "분류모델",      value: 2 },
-  { key: "예측분석",      value: 2 },
-  { key: "추천시스템",    value: 2 },
-  { key: "머신러닝",      value: 2 },
-  { key: "클러스터링",    value: 2 },
-  { key: "스테밍",        value: 1 },
-  { key: "코퍼스",        value: 1 },
-  { key: "토픽모델링",    value: 1 },
-  { key: "워드투벡",      value: 1 },
-  { key: "임베딩",        value: 1 },
-  { key: "TF-IDF",       value: 1 },
-  { key: "BERT",         value: 1 },
-  { key: "GPT",          value: 1 },
-  { key: "라벨",          value: 1 },
-  { key: "학습데이터",     value: 1 },
-  { key: "파이프라인",    value: 1 }
-];
+	const keyword = {
+			words: ["워드", "클라우드", "AI", "마이닝", "텍스트", "분석", "검색", "데이터", "NLP", "딥러닝", "모델", "토큰", "코퍼스", "시각화", "패턴", "추출", "분류", "정규화", "감성", "스테밍"],
+			config: {
+				weightRange: [8, 30],
+				maxWeight: 30,
+				waitMsBetweenTries: 120,
+				maxTries: 100
+			},
+			init: function() {
+					this.injectWords();
+					this.renderCloud();
+					this.setEvents();
+			},
+			utils: {
+					randInt: function(min, max) {
+							return Math.floor(Math.random() * (max - min + 1)) + min;
+					},
+					ellipseShape: function(theta) {
+							const { rx, ry } = keyword.config.ellipse;
+							return 1 / Math.sqrt((Math.cos(theta) / rx) ** 2 + (Math.sin(theta) / ry) ** 2);
+					}
+			},
+			injectWords: function() {
+					const box = document.querySelector(".keyword-area");
+					box.innerHTML = "";
+					this.words.forEach(word => {
+							const rawWeight = this.utils.randInt(this.config.weightRange[0], this.config.weightRange[1]);
+							const cappedWeight = Math.min(rawWeight, this.config.maxWeight);
+							const span = document.createElement("span");
+							span.textContent = word;
+							span.setAttribute("data-weight", String(cappedWeight));
+							box.appendChild(span);
+					});
+			},
+			renderCloud: function() {
+					$(".keyword-area").awesomeCloud({
+							size: {
+									grid: this.config.gridSize,
+									factor: 0,
+									normalize: true
+							},
+							color: {
+									background: "rgba(255,255,255,0)",
+									start: "#D1CAD9",
+									end: "#B58EC2"
+							},
+							options: {
+									color: "custom",
+									rotationRatio: 0,
+									printMultiplier: 2,
+									sort:"random"
+							},
+							shape: this.utils.ellipseShape,
+							wordColor: function(word, weight, fontSize) {
+									const colors = ["#D1CAD9", "#A9BFE8", "#B58EC2", "rgba(128, 33, 171, 0.55)", "rgba(128, 33, 171, 0.60)", "#A19DE5", "#A9BFE8"];
+									return colors[Math.floor(Math.random() * colors.length)];
+							}
+					});
+			},
+			setEvents: function() {
+					window.addEventListener("resize", () => {
+							// this.refresh();
+					});
+			}
+	};
 
-const labels = words.map(d => d.key);
-const data = words.map(d => d.value * 8);
-const palette = ["#D1CAD9", "#A9BFE8", "#B58EC2", "rgba(128, 33, 171, 0.55)", "rgba(128, 33, 171, 0.60)", "#A19DE5", "#A9BFE8"];
-const colorFn = (ctx) => palette[ctx.dataIndex % palette.length];
-new Chart(document.querySelector('.keyword-area').getContext("2d"), {
-  type: 'wordCloud',
-  data: {
-    labels,
-    datasets: [{
-      label: '키워드',
-      data,
-      padding: 2,
-      fit: true,
-      autoGrow: {
-        maxTries: 3,
-        scalingFactor: 1.1
-      }
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    layout: {
-      padding: 10
-    },
-    elements: {
-      word: {
-        color: colorFn,
-        rotate: () => 0, // 회전 제거하면 배치 효율 ↑
-        padding: 1,
-        maxFontSize: 20, // 너무 크지 않게 제한
-        minFontSize: 10
-      }
-    },
-    plugins: { legend: { display: false } }
-  }
-});
+	keyword.init();
 </script>
  <script>
 	const dougnutData = [
