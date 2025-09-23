@@ -9,69 +9,7 @@
   <script src="resource/js/ui-common.js"></script>
 	<link rel="stylesheet" type="text/css" href="resource/devEx/css/dx.light.css"/>
   <script type="text/javascript" src="resource/devEx/js/dx.all.js"></script>
-	  <script type="text/javascript" src="resource/js/plugins/jquery.awesomeCloud-0.2.js"></script>
-		<style>
-			.switchLabel-wrap{display:flex; align-items:center; gap:6px;}
-			.switchLabel_text{font-size:12px; color:#333;}
-.switchLabel {
-  display: inline-flex;
-  align-items: center;
-}
-
-/* 기본 토글 스타일 */
-.switch {
-  /* reset */
-  -webkit-appearance: none;
-  appearance: none;
-  margin: 0;
-  outline: none;
-  border: none;
-
-  /* size */
-  width: 24px;
-  height: 14px;
-  border-radius: 7px;
-  position: relative;
-  cursor: pointer;
-
-  /* track */
-  background: #d7dbe0;          /* off */
-  transition: background .2s ease, box-shadow .2s ease;
-}
-
-/* thumb */
-.switch::before {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 1px rgba(0,0,0,.15), 0 0 0 1px rgba(0,0,0,.05);
-  transition: transform .2s ease;
-}
-
-/* ON 상태 */
-.switch:checked {
-  background: #8b7cf8;          /* 보라색 트랙 */
-}
-.switch:checked::before {
-  transform: translateX(10px);
-}
-
-/* 포커스 링 (접근성) */
-.switch:focus-visible {
-  box-shadow: 0 0 0 3px rgba(139,124,248,.35);
-}
-
-/* 비활성화 */
-.switch:disabled {
-  cursor: not-allowed;
-  opacity: .55;
-}
-		</style>
+	<script type="text/javascript" src="resource/js/plugins/jquery.awesomeCloud-0.2.js"></script>
 </head>
 <body>
   <div class="wrapper">
