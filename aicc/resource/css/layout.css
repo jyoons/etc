@@ -22,3 +22,7 @@
 .nav-tabList.type-c1 .tab-nav-link{border-radius:100px; color:#908DB5; border:1px solid #D9D7F5;}
 .nav-tabList.type-c1 li.active .tab-nav-link,
 .nav-tabList.type-c1 li .tab-nav-link:hover{background:#8A84DF;}
+
+/* 색상 type */
+.wrapper.col-orange .nav-tabList li.active .tab-nav-link,
+.wrapper.col-orange .nav-tabList li .tab-nav-link:hover{border:1px solid #FF5600; background: #FF5600;}
