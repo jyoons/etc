@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="resource/css/common.css">
+  <script src="resource/js/jquery-3.7.1.min.js"></script>
+  <script src="resource/js/ui-common.js"></script>
+	<link rel="stylesheet" type="text/css" href="resource/devEx/css/dx.light.css"/>
+  <script type="text/javascript" src="resource/devEx/js/dx.all.js"></script>
+	<!-- <script type="text/javascript" src="resource/js/plugins/jquery.awesomeCloud-0.2.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-wordcloud@4/build/index.umd.min.js"></script>
+<script type="text/javascript" src="resource/js/grid-resizer.js"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- header -->
+    <header class="header">
+      <div class="header-wrap">
+        <div class="logo"><img src="resource/images/logo.png" alt="AICC 2.0"></div>
+        <div class="info-area">
+					<div style="display:flex; gap:14px; align-items:center;">
+						<div class="switchLabel-wrap">
+							  <span class="switchLabel_text">콜 대기</span>
+								<label class="switchLabel">
+									<input id="switch1" type="checkbox" class="switch" checked>
+								</label>
+						</div>
+						<img src="resource/images/header-info1.png" alt="" height="15px">
+					</div>
+					<div style="display:flex; align-items: center; gap:14px;">
+							<div class="switchLabel-wrap">
+								<span class="switchLabel_text">채팅대기</span>
+								<label class="switchLabel">
+									<input id="switch2" type="checkbox" class="switch" checked>
+								</label>
+							</div>
+							<div class="switchLabel-wrap">
+								<span class="switchLabel_text">게시판 대기</span>
+								<label class="switchLabel">
+									<input id="switch2" type="checkbox" class="switch">
+								</label>
+							</div>
+							<div class="switchLabel-wrap">
+								<span class="switchLabel_text">Q&A 대기</span>
+								<label class="switchLabel">
+									<input id="switch2" type="checkbox" class="switch"  checked>
+								</label>
+							</div>
+					</div>
+					<div><img src="resource/images/header-info2.png" alt=""></div>
+					<div><img src="resource/images/header-info-02.png" alt=""></div>
+        </div>
+      </div>
+			<div class="nav-wrap">
+					<button type="button" class="btn nav-btn"><img src="resource/images/icon-menu.png" alt="메뉴"></button>
+					<div class="nav-tabList-wrap">
+						<div class="nav-tab-controller">
+							<button type="button" class="btn nav-btn-prev"><img src="resource/images/icon-arrow-left.png" alt="이전"></button>
+							<button type="button" class="btn nav-btn-next"><img src="resource/images/icon-arrow-right.png" alt="다음"></button>
+							<button type="button" class="btn nav-btn-more"><img src="resource/images/icon-more.png" alt="더보기"></button>
+						</div>
+						<ul class="nav-tabList">
+							<li class="active" data-key="홈" >
+								<a href="javascript:void(0);" class="tab-nav-link"  data-url="pages/page-01.html">홈</a>
+							</li>
+						</ul>
+					</div>
+			</div>
+    </header>
+    <!--// header -->
+		<div class="nav">
+			<ul class="navList">
+				<li data-nav-title="홈" data-nav-url="pages/page-01.html">
+					<a href="javascript:void(0);" class="nav-dep1" data-nav-title="홈"><i class="im-home">home</i></a>
+				</li>
+				<li data-nav-title="대시보드" data-nav-url="pages/page-02.html">
+					<a href="javascript:void(0);" class="nav-dep1" data-nav-title="대시보드"><i class="im-dashbord">dashboard</i></a>
+				</li>
+				<!-- <li data-nav-title="모니터링" data-nav-url="index-3.html">
+					<a href="javascript:void(0);" class="nav-dep1" data-nav-title="모니터링"><i class="im-monitoring">모니터링</i></a>
+				</li> -->
+			</ul>
+		</div> 
+    <div class="container">
+      <div class="contents">
+				<!-- contents-wrap area -->
+				<div class="contents-wrap"></div>  
+				<!--// contents-wrap area -->
+      </div>
+    </div> 
+  </div>
+	<script>
+	const tabNavs = {
+    init: function(){
+      this._contElem();
+      this._initDefault();// 초기셋팅
+      this._setEvent();
+    },
+    _contElem: function(){
+      this.$tabList = $('.nav-tabList');
+      this.$contents = $('.contents-wrap');
+    },
+    _toKey: function(s){
+      return String(s || '');
+    },
+    _activateByKey: function(key){ //load 컨텐츠
+      var $tabList = this.$tabList;
+      var $contents = this.$contents;
+      $tabList.find('li').removeClass('active');
+      var $li = $tabList.find('li[data-key="' + key + '"]').addClass('active');
+      $('.navList').find('li').removeClass('active');
+      $('.navList').find('li[data-nav-title="' + key + '"]').addClass('active');
+       $('.navList').find('li[data-nav-title="' + key + '"]').parents('li').addClass('active')
+      var $a = $li.find('a.tab-nav-link');
+      var title = $a.data('title');
+      var url   = $a.data('url'); 
+      if(url){
+        $contents.load(url, function(response, status, xhr){
+          if(status === 'error'){
+            $contents.html('<div style="padding:1rem;color:red">불러오기 실패: ' + xhr.status + '</div>');
+          }
+          //퍼블 확인용
+          if(url.indexOf('page-01') > 0){
+						NX_GRID.init();
+						NX_UI.init();
+						$('.wrapper').removeClass('col-blue').addClass('col-orange');
+          }else if(url.indexOf('page-02') > 0){
+						$('.wrapper').removeClass('col-orange').addClass('col-blue');
+            // 스크립트가 포함된 페이지 로드 후 실행
+            setTimeout(function(){
+              // 로드된 콘텐츠에서 스크립트 태그들을 찾아서 실행
+              $contents.find('script').each(function(){
+                try {
+                  eval($(this).text());
+                } catch(e) {
+                	console.log('스크립트 실행 오류:', e);
+                }
+              });
+
+              // NX_GRID와 NX_UI 초기화
+              if(typeof NX_GRID !== 'undefined' && NX_GRID.init){
+                NX_GRID.init();
+              }
+              if(typeof NX_UI !== 'undefined' && NX_UI.init){
+                NX_UI.init();
+              }
+            }, 100);
+					}
+        });
+      }else{
+        $contents.html('<div>' + title + ' 콘텐츠 url 없습니다.</div>');
+      }
+    },
+    _ensureTab: function(title, opts){
+      opts = opts || {}; 
+      var $tabList = this.$tabList; 
+      var key = opts.key || this._toKey(title);
+      var exists = $tabList.find('li[data-key="' + key + '"]').length > 0;
+      if (exists){
+        this._activateByKey(key);
+        return key;
+      }
+      var closable = opts.closable !== false;
+      var $li = $('<li/>', { 'data-key': key });
+      var $a  = $('<a/>', {
+        href: '#',
+        'class': 'tab-nav-link',
+        text: title,
+        'data-title': title,
+        'data-url': opts.url || ''
+      });
+      $li.append($a);
+      if (closable){
+        var $closeBtn = $('<button/>', {
+          'class': 'tab-nav-close',
+          type: 'button'
+        });
+        $li.append($closeBtn);
+      }
+      $tabList.append($li);
+      this._activateByKey(key);
+      return key;
+    },
+    _initDefault: function(){
+      var $tabList = this.$tabList;
+      var $contents = this.$contents;
+      var $default = $tabList.find('li').first();
+      // var title = $.trim($default.text()) || '홈';
+      // $default.attr('data-key', this._toKey(title));
+      // $default.find('a').addClass('tab-nav-link').attr('data-title', title);
+      $default.addClass('active');
+      var key = $default.data('key');
+      if (key != null) {
+        this._activateByKey(key);
+      }
+    },
+    _setEvent: function(){
+      var self = this;
+      $(document).on('click', '.nav a.nav-dep2, .nav a.nav-dep1', function(e){
+        e.preventDefault();
+        var $a = $(this).parent('li');
+        var title = $a.data('nav-title');
+        var url = $a.data('nav-url');
+        if(!title){
+          return;
+        }
+        var isHome = self._toKey(title) === self._toKey('홈');
+        self._ensureTab(title, { closable: !isHome, url: url });
+      });
+      this.$tabList.on('click', 'a.tab-nav-link', function(e){
+        e.preventDefault();
+        var key = $(this).closest('li').data('key');
+        if(key != null) self._activateByKey(key);
+      });
+      this.$tabList.on('click', '.tab-nav-close', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = $(this).closest('li');
+        var wasActive = $li.hasClass('active');
+        var $prev = $li.prev('li');
+        $li.remove();
+        if (wasActive){
+          var $target = $prev.length ? $prev : self.$tabList.find('li').first();
+          var key = $target.data('key');
+          if (key != null) self._activateByKey(key);
+        }
+      });
+    }
+  };
+  tabNavs.init();
+	</script>
+	<script>
+		//퍼블 확인용 nav
+		$('.nav-btn').on('click', function(){
+			if($('.nav').hasClass('active')){
+				$('.nav').removeClass('active');
+			}else{
+				$('.nav').addClass('active');
+			}
+		})
+	</script>
+</body>
+</html> 
