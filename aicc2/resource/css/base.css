@@ -59,20 +59,6 @@ textarea:active,
 --color-border-color1 : #F5F5F5; 
 --color-border-color2 : #DDD; 
 --color-border-color3 : #E0E0E0; 
-/* --color-text-gray: #444;
---color-text-gray1: #333;
---color-text-white: #fff;
---color-text-primary: #097FE8;
---color-border-gray1 : #EBEBEB; 
---color-border-gray2 : #eee; 
---color-border-gray3 : #555; 
---color-border-gray4 : #444; 
---color-bg-primary:#097FE8;
---color-bg-white: #FFF;
---color-bg-gray: #F2F2F2;
---color-bg-blue1: #EEF5FF;
---color-bg-blue2: #81AEE9;
---color-btn-primary:#81AEE9;; */
 }
 /* scrollbar */
 ::-webkit-scrollbar{width:6px;}
