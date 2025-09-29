@@ -60,10 +60,16 @@ const NX_GRID = function(nx){
 
       document.querySelectorAll('.grid-area').forEach(area => {
         area.draggable = true;
+        // 데스크톱 드래그 이벤트
         area.addEventListener('dragstart', this.onDragStart.bind(this));
         area.addEventListener('dragover', this.onDragOver.bind(this));
         area.addEventListener('drop', this.onDrop.bind(this));
         area.addEventListener('dragend', this.onDragEnd.bind(this));
+
+        // 모바일 터치 이벤트
+        area.addEventListener('touchstart', this.onTouchStart.bind(this));
+        area.addEventListener('touchmove', this.onTouchMove.bind(this));
+        area.addEventListener('touchend', this.onTouchEnd.bind(this));
       });
     },
 
@@ -418,6 +424,147 @@ const NX_GRID = function(nx){
       });
 
       this.draggedElement = null;
+    },
+
+    // 모바일 터치 이벤트 변수들
+    touchStartElement: null,
+    touchStartX: 0,
+    touchStartY: 0,
+    isDragging: false,
+    touchMoveThreshold: 10,
+
+    onTouchStart: function(e) {
+      // 리사이즈 핸들 클릭시 무시
+      if (e.target.classList.contains('resize-h') || e.target.classList.contains('resize-v')) {
+        return;
+      }
+
+      const touch = e.touches[0];
+      this.touchStartElement = e.currentTarget;
+      this.touchStartX = touch.clientX;
+      this.touchStartY = touch.clientY;
+      this.isDragging = false;
+
+      // 길게 누르기 감지를 위한 타이머
+      this.longPressTimer = setTimeout(() => {
+        if (this.touchStartElement) {
+          this.startTouchDrag();
+        }
+      }, 500); // 500ms 길게 누르기
+    },
+
+    onTouchMove: function(e) {
+      if (!this.touchStartElement) return;
+
+      const touch = e.touches[0];
+      const deltaX = Math.abs(touch.clientX - this.touchStartX);
+      const deltaY = Math.abs(touch.clientY - this.touchStartY);
+
+      // 드래그 시작 임계값 확인
+      if (!this.isDragging && (deltaX > this.touchMoveThreshold || deltaY > this.touchMoveThreshold)) {
+        clearTimeout(this.longPressTimer);
+        this.startTouchDrag();
+      }
+
+      if (this.isDragging) {
+        e.preventDefault();
+
+        // 현재 터치 위치의 엘리먼트 찾기
+        const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+        const dropTarget = elementBelow ? elementBelow.closest('.grid-area') : null;
+
+        // 모든 드래그 오버 클래스 제거
+        document.querySelectorAll('.grid-area').forEach(area => {
+          area.classList.remove('drag-over');
+        });
+
+        // 유효한 드롭 타겟에 드래그 오버 클래스 추가
+        if (dropTarget && dropTarget !== this.touchStartElement) {
+          dropTarget.classList.add('drag-over');
+          this.currentDropTarget = dropTarget;
+        } else {
+          this.currentDropTarget = null;
+        }
+      }
+    },
+
+    onTouchEnd: function(e) {
+      clearTimeout(this.longPressTimer);
+
+      if (this.isDragging && this.currentDropTarget) {
+        // 드롭 실행
+        this.performTouchDrop(this.touchStartElement, this.currentDropTarget);
+      }
+
+      // 정리
+      if (this.touchStartElement) {
+        this.touchStartElement.style.opacity = '';
+        this.touchStartElement.classList.remove('dragging');
+      }
+
+      document.querySelectorAll('.grid-area').forEach(area => {
+        area.classList.remove('drag-over');
+      });
+
+      this.touchStartElement = null;
+      this.currentDropTarget = null;
+      this.isDragging = false;
+    },
+
+    startTouchDrag: function() {
+      if (!this.touchStartElement) return;
+
+      this.isDragging = true;
+      this.draggedElement = this.touchStartElement;
+      this.touchStartElement.style.opacity = '0.5';
+      this.touchStartElement.classList.add('dragging');
+    },
+
+    performTouchDrop: function(draggedElement, dropTarget) {
+      if (draggedElement === dropTarget || !dropTarget.classList.contains('grid-area')) {
+        return;
+      }
+
+      const draggedParent = draggedElement.parentNode;
+      const targetParent = dropTarget.parentNode;
+
+      if (draggedParent === targetParent) {
+        // 같은 부모 내에서 위치 변경
+        const draggedNext = draggedElement.nextSibling;
+        const targetNext = dropTarget.nextSibling;
+
+        if (draggedNext) {
+          draggedParent.insertBefore(dropTarget, draggedNext);
+        } else {
+          draggedParent.appendChild(dropTarget);
+        }
+
+        if (targetNext) {
+          targetParent.insertBefore(draggedElement, targetNext);
+        } else {
+          targetParent.appendChild(draggedElement);
+        }
+      } else {
+        // 다른 부모 간 위치 변경
+        const draggedNext = draggedElement.nextSibling;
+        const targetNext = dropTarget.nextSibling;
+
+        if (targetNext) {
+          targetParent.insertBefore(draggedElement, targetNext);
+        } else {
+          targetParent.appendChild(draggedElement);
+        }
+
+        if (draggedNext) {
+          draggedParent.insertBefore(dropTarget, draggedNext);
+        } else {
+          draggedParent.appendChild(dropTarget);
+        }
+        this.adaptWidthForCrossRowMove(draggedElement, dropTarget, draggedParent, targetParent);
+      }
+
+      this.saveGridLayout();
+      this.bindResizeEvents();
     },
 
     adaptWidthForCrossRowMove: function(draggedElement, dropTarget, draggedParent, targetParent) {

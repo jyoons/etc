@@ -1,7 +1,7 @@
 					<div class="conts-area-wrap flexible-area" style="grid-template-rows: 0.8fr 10px 1.2fr;">
 						<!-- grid left -->
 						<div class="grid-row row-1">
-							<div class="grid-area" style="flex: 0 0 20%">
+							<div class="grid-area">
 								<div class="grid-conts" style="overflow:hidden;">
 									<div class="conTit">고객 이슈 키워드 Cloude</div>
 									<div class="grid-conts-inner">
@@ -12,7 +12,7 @@
 								</div>
 								<div class="resize-h"></div>
 							</div>
-							<div class="grid-area" style="flex: 0 0 30%">
+							<div class="grid-area">
 								<div class="grid-conts">  
 									<div class="conTit">상담사 상태</div>
 									<div class="chart-wrap">
@@ -179,220 +179,219 @@
 						</div>
 						<!--// grid right -->
 					</div>
-
-    <script>
-const keyword = {
-  words: [
- { key: "워드클라우드", value: 10 },
-    { key: "AI", value: 9 },
-    { key: "텍스트", value: 8 },
-    { key: "분석", value: 8 },
-    { key: "자연어", value: 7 },
-    { key: "딥러닝", value: 7 },
-    { key: "데이터", value: 6 },
-    { key: "검색", value: 6 },
-    { key: "모델", value: 5 },
-    { key: "NLP", value: 5 },
-    { key: "시각화", value: 5 },
-    { key: "정규화", value: 4 },
-    { key: "감성", value: 4 },
-    { key: "추천", value: 4 },
-    { key: "전처리", value: 3 },
-    { key: "라벨링", value: 3 },
-    { key: "패턴", value: 3 },
-    { key: "파이프라인", value: 2 },
-    { key: "토큰화", value: 2 },
-    { key: "형태소", value: 2 },
-    { key: "불용어", value: 2 },
-    { key: "어간추출", value: 2 },
-    { key: "감정분석", value: 2 },
-    { key: "군집화", value: 2 },
-    { key: "분류모델", value: 2 },
-    { key: "예측분석", value: 2 },
-    { key: "추천시스템", value: 2 },
-    { key: "머신러닝", value: 2 },
-    { key: "클러스터링", value: 2 }
-  ],
-  config: {
-    palette: ["#D1CAD9", "#A9BFE8", "#B58EC2", "rgba(128, 33, 171, 0.55)", "rgba(128, 33, 171, 0.60)", "#A19DE5", "#A9BFE8"],
-    fontMultiplier: 3,
-    maxFontSize: 12,
-    minFontSize: 6,
-    padding: 3
-  },
-  chart: null,
-  init: function() {
-    // DOM이 완전히 로드된 후 실행
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
+  <script>
+  var keyword = keyword || {
+    words: [
+  { key: "워드클라우드", value: 10 },
+      { key: "AI", value: 9 },
+      { key: "텍스트", value: 8 },
+      { key: "분석", value: 8 },
+      { key: "자연어", value: 7 },
+      { key: "딥러닝", value: 7 },
+      { key: "데이터", value: 6 },
+      { key: "검색", value: 6 },
+      { key: "모델", value: 5 },
+      { key: "NLP", value: 5 },
+      { key: "시각화", value: 5 },
+      { key: "정규화", value: 4 },
+      { key: "감성", value: 4 },
+      { key: "추천", value: 4 },
+      { key: "전처리", value: 3 },
+      { key: "라벨링", value: 3 },
+      { key: "패턴", value: 3 },
+      { key: "파이프라인", value: 2 },
+      { key: "토큰화", value: 2 },
+      { key: "형태소", value: 2 },
+      { key: "불용어", value: 2 },
+      { key: "어간추출", value: 2 },
+      { key: "감정분석", value: 2 },
+      { key: "군집화", value: 2 },
+      { key: "분류모델", value: 2 },
+      { key: "예측분석", value: 2 },
+      { key: "추천시스템", value: 2 },
+      { key: "머신러닝", value: 2 },
+      { key: "클러스터링", value: 2 }
+    ],
+    config: {
+      palette: ["#D1CAD9", "#A9BFE8", "#B58EC2", "rgba(128, 33, 171, 0.55)", "rgba(128, 33, 171, 0.60)", "#A19DE5", "#A9BFE8"],
+      fontMultiplier: 3,
+      maxFontSize: 12,
+      minFontSize: 6,
+      padding: 3
+    },
+    chart: null,
+    init: function() {
+      // DOM이 완전히 로드된 후 실행
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          setTimeout(() => this.renderCloud(), 100);
+        });
+      } else {
         setTimeout(() => this.renderCloud(), 100);
-      });
-    } else {
-      setTimeout(() => this.renderCloud(), 100);
-    }
-  },
-  renderCloud: function() {
-    const canvas = document.querySelector('.keyword-area');
-    if (!canvas) {
-      console.warn('WordCloud canvas not found');
-      return;
-    }
-
-    // Canvas 크기를 부모 컨테이너에 맞게 제한
-    const parentContainer = canvas.closest('.keyword-wrap');
-    if (parentContainer) {
-      const containerRect = parentContainer.getBoundingClientRect();
-      canvas.width = Math.min(containerRect.width, 400);  // 최대 400px 제한
-      canvas.height = Math.min(containerRect.height, 300); // 최대 300px 제한
-      canvas.style.width = canvas.width + 'px';
-      canvas.style.height = canvas.height + 'px';
-    }
-
-    // 데이터 유효성 검사
-    if (!this.words || !Array.isArray(this.words) || this.words.length === 0) {
-      console.warn('WordCloud words data is invalid');
-      return;
-    }
-
-    const labels = this.words.filter(d => d && d.key).map(d => d.key);
-    const data = this.words.filter(d => d && d.value != null).map(d => d.value * this.config.fontMultiplier);
-
-    // 데이터 길이 맞춤
-    if (labels.length !== data.length) {
-      console.warn('WordCloud labels and data length mismatch');
-      const minLength = Math.min(labels.length, data.length);
-      labels.splice(minLength);
-      data.splice(minLength);
-    }
-
-    const colorFn = (ctx) => {
-      if (!ctx || ctx.dataIndex === undefined || ctx.dataIndex === null) {
-        return this.config.palette[0];
       }
-      const paletteIndex = ctx.dataIndex % this.config.palette.length;
-      return this.config.palette[paletteIndex] || this.config.palette[0];
-    };
+    },
+    renderCloud: function() {
+      const canvas = document.querySelector('.keyword-area');
+      if (!canvas) {
+        console.warn('WordCloud canvas not found');
+        return;
+      }
 
-    // 기존 차트가 있으면 제거
-    if (this.chart) {
-      this.chart.destroy();
-      this.chart = null;
-    }
+      // Canvas 크기를 부모 컨테이너에 맞게 제한
+      const parentContainer = canvas.closest('.keyword-wrap');
+      if (parentContainer) {
+        const containerRect = parentContainer.getBoundingClientRect();
+        canvas.width = Math.min(containerRect.width, 400);  // 최대 400px 제한
+        canvas.height = Math.min(containerRect.height, 300); // 최대 300px 제한
+        canvas.style.width = canvas.width + 'px';
+        canvas.style.height = canvas.height + 'px';
+      }
 
-    // Canvas 초기화
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // 데이터 유효성 검사
+      if (!this.words || !Array.isArray(this.words) || this.words.length === 0) {
+        console.warn('WordCloud words data is invalid');
+        return;
+      }
 
-    // 최종 데이터 검증
-    if (labels.length === 0 || data.length === 0) {
-      console.warn('WordCloud: No valid data to display');
-      return;
-    }
+      const labels = this.words.filter(d => d && d.key).map(d => d.key);
+      const data = this.words.filter(d => d && d.value != null).map(d => d.value * this.config.fontMultiplier);
 
-    try {
-      // Chart.js에서 모든 차트 인스턴스 정리
-      Chart.getChart(canvas)?.destroy();
+      // 데이터 길이 맞춤
+      if (labels.length !== data.length) {
+        console.warn('WordCloud labels and data length mismatch');
+        const minLength = Math.min(labels.length, data.length);
+        labels.splice(minLength);
+        data.splice(minLength);
+      }
 
-      this.chart = new Chart(canvas.getContext("2d"), {
-        type: 'wordCloud',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: '키워드',
-            data: data,
-            padding: 4,
-            fit: true,
-            shrinkToFit: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          layout: {
-            padding: 20
-          },
-          elements: {
-            word: {
-              color: colorFn,
-              rotate: () => 0,
-              padding: this.config.padding,
-              maxFontSize: this.config.maxFontSize,
-              minFontSize: this.config.minFontSize
-            }
-          },
-          scales: {
-            x: { display: false },
-            y: { display: false }
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: { enabled: false }
-          },
-          // WordCloud 특화 옵션
-          wordCloud: {
-            fit: true,
-            shrinkToFit: true,
-            maxAttempts: 20,
-            drawOutOfBound: true,
-            minRotation: 0,
-            maxRotation: 0
-          }
+      const colorFn = (ctx) => {
+        if (!ctx || ctx.dataIndex === undefined || ctx.dataIndex === null) {
+          return this.config.palette[0];
         }
-      });
+        const paletteIndex = ctx.dataIndex % this.config.palette.length;
+        return this.config.palette[paletteIndex] || this.config.palette[0];
+      };
 
-      // WordCloud 에러 처리
+      // 기존 차트가 있으면 제거
       if (this.chart) {
-        this.chart.options.onError = (error) => {
-          console.warn('WordCloud error:', error);
-          if (error && error.message && error.message.includes('cannot fit')) {
-            this.config.maxFontSize = Math.max(4, this.config.maxFontSize - 3);
-            this.config.minFontSize = Math.max(3, this.config.minFontSize - 1);
-            this.config.fontMultiplier = Math.max(1, this.config.fontMultiplier - 1);
-
-            if (this.config.maxFontSize <= 6) {
-              this.words = this.words.slice(0, Math.max(5, this.words.length - 2));
-            }
-
-            setTimeout(() => {
-              this.renderCloud();
-            }, 200);
-          }
-        };
+        this.chart.destroy();
+        this.chart = null;
       }
-    } catch (error) {
-      console.error('WordCloud initialization error:', error);
 
+      // Canvas 초기화
       const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#666';
-        ctx.font = '14px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('WordCloud 로딩 중...', canvas.width / 2, canvas.height / 2);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 최종 데이터 검증
+      if (labels.length === 0 || data.length === 0) {
+        console.warn('WordCloud: No valid data to display');
+        return;
+      }
+
+      try {
+        // Chart.js에서 모든 차트 인스턴스 정리
+        Chart.getChart(canvas)?.destroy();
+
+        this.chart = new Chart(canvas.getContext("2d"), {
+          type: 'wordCloud',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '키워드',
+              data: data,
+              padding: 4,
+              fit: true,
+              shrinkToFit: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+              padding: 20
+            },
+            elements: {
+              word: {
+                color: colorFn,
+                rotate: () => 0,
+                padding: this.config.padding,
+                maxFontSize: this.config.maxFontSize,
+                minFontSize: this.config.minFontSize
+              }
+            },
+            scales: {
+              x: { display: false },
+              y: { display: false }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: { enabled: false }
+            },
+            // WordCloud 특화 옵션
+            wordCloud: {
+              fit: true,
+              shrinkToFit: true,
+              maxAttempts: 20,
+              drawOutOfBound: true,
+              minRotation: 0,
+              maxRotation: 0
+            }
+          }
+        });
+
+        // WordCloud 에러 처리
+        if (this.chart) {
+          this.chart.options.onError = (error) => {
+            console.warn('WordCloud error:', error);
+            if (error && error.message && error.message.includes('cannot fit')) {
+              this.config.maxFontSize = Math.max(4, this.config.maxFontSize - 3);
+              this.config.minFontSize = Math.max(3, this.config.minFontSize - 1);
+              this.config.fontMultiplier = Math.max(1, this.config.fontMultiplier - 1);
+
+              if (this.config.maxFontSize <= 6) {
+                this.words = this.words.slice(0, Math.max(5, this.words.length - 2));
+              }
+
+              setTimeout(() => {
+                this.renderCloud();
+              }, 200);
+            }
+          };
+        }
+      } catch (error) {
+        console.error('WordCloud initialization error:', error);
+
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#666';
+          ctx.font = '14px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('WordCloud 로딩 중...', canvas.width / 2, canvas.height / 2);
+        }
       }
     }
-  }
-};
+  };
 
-keyword.init();
-</script>
+  keyword.init();
+  </script>
  <script>
-	const dougnutData = [
+	var dougnutData = dougnutData || [
 			{ category: '통화중', value: 850 },
 			{ category: '휴식', value: 420 },
 			{ category: '대기', value: 380 },
 			{ category: '후처리', value: 280 },
 			{ category: '로그아웃', value: 121 }
 	];
-	const dougnutData1 = [
+	var dougnutData1 = dougnutData1 || [
 			{ category: '응답', value: 850 },
 			{ category: '무응답', value: 420 }
 	];	
-	const dougnutData2 = [
+	var dougnutData2 = dougnutData2 || [
 			{ category: '응답', value: 490 },
 			{ category: '무응답', value:500 }
 	];
-	const lineChartData = [
+	var lineChartData = lineChartData || [
 		{ time: '8시', actual: 15, target: 50 },
 		{ time: '9시', actual: 78, target: 60 },
 		{ time: '10시', actual: 92, target: 70 },
@@ -404,7 +403,7 @@ keyword.init();
 		{ time: '16시', actual: 82, target: 100 },
 		{ time: '17시', actual: 68, target: 90 }
 ];
-	const barChartData = [
+	var barChartData = barChartData || [
 		{ category: '1~20초', value: 245},
 		{ category: '21~40초', value: 300},
 		{ category: '41~60초', value: 156},
@@ -754,7 +753,7 @@ keyword.init();
 			}).dxChart("instance");
 			return chart;
 	}
-	let currentBarChart = null;
+	var currentBarChart = currentBarChart || null;
 	function updateBarChart(filter) {
     if (currentBarChart) {
         currentBarChart.dispose();
@@ -772,7 +771,7 @@ keyword.init();
 	});
 </script>
 <script>
-	const gridData = [
+	var gridData = gridData || [
 		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
 		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
 		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
@@ -789,7 +788,7 @@ keyword.init();
 		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
 		{id : 'SKT23121-last',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:0, t2:10, t3:10, t4:10, t5:10, t6:0}
 ];
-	const gridColumns = {
+	var gridColumns = gridColumns || {
 		data1: [
 			{
 				dataField: 'id',
@@ -945,5 +944,4 @@ keyword.init();
 	}
 
 	createDataGrid('#gridTable1', gridData, 'data1');
-	//createDataGrid('#gridTable2', gridData, 'data2');
 </script>      

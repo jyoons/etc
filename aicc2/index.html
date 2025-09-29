@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <title>Document</title>
   <link rel="stylesheet" type="text/css" href="resource/css/common.css">
   <script src="resource/js/jquery-3.7.1.min.js"></script>
@@ -21,7 +21,7 @@
       <div class="header-wrap">
         <div class="logo"><img src="resource/images/logo.png" alt="AICC 2.0"></div>
         <div class="info-area">
-					<div style="display:flex; gap:14px; align-items:center;">
+					<div class="form-group">
 						<div class="switchLabel-wrap">
 							  <span class="switchLabel_text">콜 대기</span>
 								<label class="switchLabel">
@@ -30,7 +30,7 @@
 						</div>
 						<img src="resource/images/header-info1.png" alt="" height="15px">
 					</div>
-					<div style="display:flex; align-items: center; gap:14px;">
+					<div class="form-group">
 							<div class="switchLabel-wrap">
 								<span class="switchLabel_text">채팅대기</span>
 								<label class="switchLabel">
@@ -240,7 +240,8 @@
 			}else{
 				$('.nav').addClass('active');
 			}
-		})
+		});
+   // $('.navList>li>a[data-nav-title="대시보드"]').trigger('click');
 	</script>
 </body>
 </html> 
