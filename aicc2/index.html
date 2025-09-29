@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" type="text/css" href="resource/css/common.css">
   <script src="resource/js/jquery-3.7.1.min.js"></script>
@@ -12,25 +12,25 @@
 	<!-- <script type="text/javascript" src="resource/js/plugins/jquery.awesomeCloud-0.2.js"></script> -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-wordcloud@4/build/index.umd.min.js"></script>
-<script type="text/javascript" src="resource/js/grid-resizer.js"></script>
+	<script type="text/javascript" src="resource/js/grid-resizer.js"></script>
 </head>
 <body>
   <div class="wrapper">
     <!-- header -->
     <header class="header">
       <div class="header-wrap">
-        <div class="logo"><img src="resource/images/logo.png" alt="AICC 2.0"></div>
+        <div class="logo"><img src="resource/images/logo-2.png" alt="AICC 2.0"></div>
         <div class="info-area">
-					<div class="form-group">
+					<div style="display:flex; gap:14px;">
 						<div class="switchLabel-wrap">
 							  <span class="switchLabel_text">콜 대기</span>
 								<label class="switchLabel">
 									<input id="switch1" type="checkbox" class="switch" checked>
 								</label>
 						</div>
-						<img src="resource/images/header-info1.png" alt="" height="15px">
+						<img src="resource/images/header-info1.png" alt="">
 					</div>
-					<div class="form-group">
+					<div style="display:flex; align-items: center; gap:14px;">
 							<div class="switchLabel-wrap">
 								<span class="switchLabel_text">채팅대기</span>
 								<label class="switchLabel">
@@ -62,186 +62,969 @@
 							<button type="button" class="btn nav-btn-next"><img src="resource/images/icon-arrow-right.png" alt="다음"></button>
 							<button type="button" class="btn nav-btn-more"><img src="resource/images/icon-more.png" alt="더보기"></button>
 						</div>
-						<ul class="nav-tabList">
-							<li class="active" data-key="홈" >
-								<a href="javascript:void(0);" class="tab-nav-link"  data-url="pages/page-01.html">홈</a>
-							</li>
+						<ul class="nav-tabList type-c1">
+							<li class="active"><a href="javascript:void(0);" class="tab-nav-link">콜</a></li>
+							<li><a href="javascript:void(0);" class="tab-nav-link">채팅</a></li>
+							<li><a href="javascript:void(0);" class="tab-nav-link">상담통계</a></li>
+							<li><a href="javascript:void(0);" class="tab-nav-link">업무이관리스트</a></li>
 						</ul>
 					</div>
 			</div>
     </header>
-    <!--// header -->
-		<div class="nav">
-			<ul class="navList">
-				<li data-nav-title="홈" data-nav-url="pages/page-01.html">
-					<a href="javascript:void(0);" class="nav-dep1" data-nav-title="홈"><i class="im-home">home</i></a>
-				</li>
-				<li data-nav-title="대시보드" data-nav-url="pages/page-02.html">
-					<a href="javascript:void(0);" class="nav-dep1" data-nav-title="대시보드"><i class="im-dashbord">dashboard</i></a>
-				</li>
-				<!-- <li data-nav-title="모니터링" data-nav-url="index-3.html">
-					<a href="javascript:void(0);" class="nav-dep1" data-nav-title="모니터링"><i class="im-monitoring">모니터링</i></a>
-				</li> -->
-			</ul>
-		</div> 
+    <!--// header --> 
     <div class="container">
       <div class="contents">
-				<!-- contents-wrap area -->
-				<div class="contents-wrap"></div>  
-				<!--// contents-wrap area -->
+				<div class="contents-wrap">
+					<div class="conts-area-wrap flexible-area" style="grid-template-rows: 0.8fr 10px 1.2fr;">
+						<!-- grid left -->
+						<div class="grid-row row-1">
+							<div class="grid-area" style="flex: 0 0 20%">
+								<div class="grid-conts" style="overflow:hidden;">
+									<div class="conTit">고객 이슈 키워드 Cloude</div>
+									<div class="grid-conts-inner">
+										<div class="keyword-wrap">
+        							<canvas class="keyword-area"></canvas>
+      							</div>
+									</div>
+								</div>
+								<div class="resize-h"></div>
+							</div>
+							<div class="grid-area" style="flex: 0 0 30%">
+								<div class="grid-conts">  
+									<div class="conTit">상담사 상태</div>
+									<div class="chart-wrap">
+										<div class="donutChart-box">
+											<div id="donutChart1" class="chart-area"></div>
+											<div class="center-text">
+													<span class="label">로그인</span>
+													<strong class="value counter" data-target-num="230">0</strong>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="resize-h"></div>
+							</div>
+							<div class="grid-area">
+								<div class="grid-conts">
+									<div class="conTit">서비스 현황</div>
+									<div class="chart-wrap">
+										<div class="lineChart-box">
+											<div id="lineChart1" class="chart"></div>
+										</div>
+									</div>
+								</div>
+								<div class="resize-h"></div>
+							</div>
+						</div>
+						<!--// grid left -->
+		  			<div class="grip-v" id="" aria-label="resize columns"></div>
+						<!-- grid right -->
+						<div class="grid-row row-2">
+							<div class="grid-area">
+								<div class="grid-conts">
+									<div class="conTit">큐현황</div>
+										<div class="data-list-wrap">
+											<ul class="data-list-cards">
+												<li class="data-list-card">
+													<div class="dataTit">총인입호</div>
+													<div class="conts counter" data-target-num="1415">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">실인입호</div>
+													<div class="conts counter" data-target-num="21">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">분배호</div>
+													<div class="conts counter"  data-target-num="65">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">포기호</div>
+													<div class="conts counter" data-target-num="0">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">넌서비스호</div>
+													<div class="conts counter" data-target-num="0">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">콜백</div>
+													<div class="conts counter" data-target-num="21">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">큐전환</div>
+													<div class="conts counter" data-target-num="0">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">실패호</div>
+													<div class="conts counter" data-target-num="1">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">그룹호전환</div>
+													<div class="conts counter" data-target-num="0">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">타센터 라우팅</div>
+													<div class="conts counter" data-target-num="9">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">타센터 라우팅 실패</div>
+													<div class="conts counter" data-target-num="21">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">타센터 인입</div>
+													<div class="conts counter" data-target-num="7">0</div>
+												</li>
+											</ul>
+										</div>
+								</div>
+								<div class="resize-h"></div>
+							</div>
+							<div class="grid-area">
+								<div class="grid-conts">
+									<div class="conTit">대기호</div>
+									<div class="grid-conts-inner">							
+										<div class="chart-area-multi">
+											<div class="select-field"> 
+												<select id="chartFilterSelect" class="select">
+													<option value="all">전체</option>
+													<option value="1~20초">1~20초</option>
+													<option value="21~40초">21~40초</option>
+													<option value="41~60초">41~60초</option>
+													<option value="61~80초">61~80초</option>
+													<option value="81~300초">81~300초</option>
+													<option value="301초 이상">301초</option>
+												</select>
+											</div>
+											<div class="barChart-box">
+												<div id="barChart1" class="chart"></div>
+											</div>
+										</div>
+										<div class="grid-table-area">
+											<div class="dx-grid-custom" id="gridTable1"></div>  
+										</div>
+									</div>
+								</div>
+								<div class="resize-h"></div>
+							</div>
+							<div class="grid-area">
+								<div class="grid-conts">
+									<div class="conTit">대기호</div>
+									<div class="grid-conts-inner">		
+										<div class="chart-area-multi" style="padding:0 10%;">
+											<div class="donutChart-box" style="height:130px;">
+												<div id="donutChart2" class="chart"></div>
+												<div class="center-text">
+													<span class="label">응답률</span>
+													<strong class="value counter" data-target-num="60.0" data-decimal="1">0<em>%</em></strong>
+												</div>
+											</div>
+											<div class="donutChart-box" style="height:130px;">
+												<div id="donutChart3" class="chart"></div>
+												<div class="center-text">
+													<span class="label">서비스 레벨</span>
+													<strong class="value counter" data-target-num="47.0" data-decimal="1">0<em>%</em></strong>
+												</div>
+											</div>
+										</div>
+										<div class="data-list-wrap">
+											<ul class="data-list-cards col-3">
+												<li class="data-list-card">
+													<div class="dataTit">인입호</div>
+													<div class="conts counter" data-target-num="150">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">대기호</div>
+													<div class="conts counter" data-target-num="3">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">응답호</div>
+													<div class="conts counter"  data-target-num="125">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">포기호</div>
+													<div class="conts counter" data-target-num="1">0</div>
+												</li>
+												<li class="data-list-card">
+													<div class="dataTit">발신호</div>
+													<div class="conts counter" data-target-num="28">0</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="resize-h"></div>
+							</div>
+						</div>
+						<!--// grid right -->
+					</div>
+				</div>
       </div>
     </div> 
   </div>
-	<script>
-	const tabNavs = {
-    init: function(){
-      this._contElem();
-      this._initDefault();// 초기셋팅
-      this._setEvent();
-    },
-    _contElem: function(){
-      this.$tabList = $('.nav-tabList');
-      this.$contents = $('.contents-wrap');
-    },
-    _toKey: function(s){
-      return String(s || '');
-    },
-    _activateByKey: function(key){ //load 컨텐츠
-      var $tabList = this.$tabList;
-      var $contents = this.$contents;
-      $tabList.find('li').removeClass('active');
-      var $li = $tabList.find('li[data-key="' + key + '"]').addClass('active');
-      $('.navList').find('li').removeClass('active');
-      $('.navList').find('li[data-nav-title="' + key + '"]').addClass('active');
-       $('.navList').find('li[data-nav-title="' + key + '"]').parents('li').addClass('active')
-      var $a = $li.find('a.tab-nav-link');
-      var title = $a.data('title');
-      var url   = $a.data('url'); 
-      if(url){
-        $contents.load(url, function(response, status, xhr){
-          if(status === 'error'){
-            $contents.html('<div style="padding:1rem;color:red">불러오기 실패: ' + xhr.status + '</div>');
-          }
-          //퍼블 확인용
-          if(url.indexOf('page-01') > 0){
-						NX_GRID.init();
-						NX_UI.init();
-						$('.wrapper').removeClass('col-blue').addClass('col-orange');
-          }else if(url.indexOf('page-02') > 0){
-						$('.wrapper').removeClass('col-orange').addClass('col-blue');
-            // 스크립트가 포함된 페이지 로드 후 실행
-            setTimeout(function(){
-              // 로드된 콘텐츠에서 스크립트 태그들을 찾아서 실행
-              $contents.find('script').each(function(){
-                try {
-                  eval($(this).text());
-                } catch(e) {
-                	console.log('스크립트 실행 오류:', e);
-                }
-              });
-
-              // NX_GRID와 NX_UI 초기화
-              if(typeof NX_GRID !== 'undefined' && NX_GRID.init){
-                NX_GRID.init();
-              }
-              if(typeof NX_UI !== 'undefined' && NX_UI.init){
-                NX_UI.init();
-              }
-            }, 100);
-					}
-        });
-      }else{
-        $contents.html('<div>' + title + ' 콘텐츠 url 없습니다.</div>');
-      }
-    },
-    _ensureTab: function(title, opts){
-      opts = opts || {}; 
-      var $tabList = this.$tabList; 
-      var key = opts.key || this._toKey(title);
-      var exists = $tabList.find('li[data-key="' + key + '"]').length > 0;
-      if (exists){
-        this._activateByKey(key);
-        return key;
-      }
-      var closable = opts.closable !== false;
-      var $li = $('<li/>', { 'data-key': key });
-      var $a  = $('<a/>', {
-        href: '#',
-        'class': 'tab-nav-link',
-        text: title,
-        'data-title': title,
-        'data-url': opts.url || ''
+<script>
+const keyword = {
+  words: [
+ { key: "워드클라우드", value: 10 },
+    { key: "AI", value: 9 },
+    { key: "텍스트", value: 8 },
+    { key: "분석", value: 8 },
+    { key: "자연어", value: 7 },
+    { key: "딥러닝", value: 7 },
+    { key: "데이터", value: 6 },
+    { key: "검색", value: 6 },
+    { key: "모델", value: 5 },
+    { key: "NLP", value: 5 },
+    { key: "시각화", value: 5 },
+    { key: "정규화", value: 4 },
+    { key: "감성", value: 4 },
+    { key: "추천", value: 4 },
+    { key: "전처리", value: 3 },
+    { key: "라벨링", value: 3 },
+    { key: "패턴", value: 3 },
+    { key: "파이프라인", value: 2 },
+    { key: "토큰화", value: 2 },
+    { key: "형태소", value: 2 },
+    { key: "불용어", value: 2 },
+    { key: "어간추출", value: 2 },
+    { key: "감정분석", value: 2 },
+    { key: "군집화", value: 2 },
+    { key: "분류모델", value: 2 },
+    { key: "예측분석", value: 2 },
+    { key: "추천시스템", value: 2 },
+    { key: "머신러닝", value: 2 },
+    { key: "클러스터링", value: 2 }
+  ],
+  config: {
+    palette: ["#D1CAD9", "#A9BFE8", "#B58EC2", "rgba(128, 33, 171, 0.55)", "rgba(128, 33, 171, 0.60)", "#A19DE5", "#A9BFE8"],
+    fontMultiplier: 3,
+    maxFontSize: 12,
+    minFontSize: 6,
+    padding: 3
+  },
+  chart: null,
+  init: function() {
+    // DOM이 완전히 로드된 후 실행
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => this.renderCloud(), 100);
       });
-      $li.append($a);
-      if (closable){
-        var $closeBtn = $('<button/>', {
-          'class': 'tab-nav-close',
-          type: 'button'
-        });
-        $li.append($closeBtn);
-      }
-      $tabList.append($li);
-      this._activateByKey(key);
-      return key;
-    },
-    _initDefault: function(){
-      var $tabList = this.$tabList;
-      var $contents = this.$contents;
-      var $default = $tabList.find('li').first();
-      // var title = $.trim($default.text()) || '홈';
-      // $default.attr('data-key', this._toKey(title));
-      // $default.find('a').addClass('tab-nav-link').attr('data-title', title);
-      $default.addClass('active');
-      var key = $default.data('key');
-      if (key != null) {
-        this._activateByKey(key);
-      }
-    },
-    _setEvent: function(){
-      var self = this;
-      $(document).on('click', '.nav a.nav-dep2, .nav a.nav-dep1', function(e){
-        e.preventDefault();
-        var $a = $(this).parent('li');
-        var title = $a.data('nav-title');
-        var url = $a.data('nav-url');
-        if(!title){
-          return;
-        }
-        var isHome = self._toKey(title) === self._toKey('홈');
-        self._ensureTab(title, { closable: !isHome, url: url });
-      });
-      this.$tabList.on('click', 'a.tab-nav-link', function(e){
-        e.preventDefault();
-        var key = $(this).closest('li').data('key');
-        if(key != null) self._activateByKey(key);
-      });
-      this.$tabList.on('click', '.tab-nav-close', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = $(this).closest('li');
-        var wasActive = $li.hasClass('active');
-        var $prev = $li.prev('li');
-        $li.remove();
-        if (wasActive){
-          var $target = $prev.length ? $prev : self.$tabList.find('li').first();
-          var key = $target.data('key');
-          if (key != null) self._activateByKey(key);
-        }
-      });
+    } else {
+      setTimeout(() => this.renderCloud(), 100);
     }
-  };
-  tabNavs.init();
-	</script>
-	<script>
-		//퍼블 확인용 nav
-		$('.nav-btn').on('click', function(){
-			if($('.nav').hasClass('active')){
-				$('.nav').removeClass('active');
-			}else{
-				$('.nav').addClass('active');
+  },
+  renderCloud: function() {
+    const canvas = document.querySelector('.keyword-area');
+    if (!canvas) {
+      console.warn('WordCloud canvas not found');
+      return;
+    }
+
+    // Canvas 크기를 부모 컨테이너에 맞게 제한
+    const parentContainer = canvas.closest('.keyword-wrap');
+    if (parentContainer) {
+      const containerRect = parentContainer.getBoundingClientRect();
+      canvas.width = Math.min(containerRect.width, 400);  // 최대 400px 제한
+      canvas.height = Math.min(containerRect.height, 300); // 최대 300px 제한
+      canvas.style.width = canvas.width + 'px';
+      canvas.style.height = canvas.height + 'px';
+    }
+
+    // 데이터 유효성 검사
+    if (!this.words || !Array.isArray(this.words) || this.words.length === 0) {
+      console.warn('WordCloud words data is invalid');
+      return;
+    }
+
+    const labels = this.words.filter(d => d && d.key).map(d => d.key);
+    const data = this.words.filter(d => d && d.value != null).map(d => d.value * this.config.fontMultiplier);
+
+    // 데이터 길이 맞춤
+    if (labels.length !== data.length) {
+      console.warn('WordCloud labels and data length mismatch');
+      const minLength = Math.min(labels.length, data.length);
+      labels.splice(minLength);
+      data.splice(minLength);
+    }
+
+    const colorFn = (ctx) => {
+      if (!ctx || ctx.dataIndex === undefined || ctx.dataIndex === null) {
+        return this.config.palette[0];
+      }
+      const paletteIndex = ctx.dataIndex % this.config.palette.length;
+      return this.config.palette[paletteIndex] || this.config.palette[0];
+    };
+
+    // 기존 차트가 있으면 제거
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
+
+    // 최종 데이터 검증
+    if (labels.length === 0 || data.length === 0) {
+      console.warn('WordCloud: No valid data to display');
+      return;
+    }
+
+    try {
+      this.chart = new Chart(canvas.getContext("2d"), {
+        type: 'wordCloud',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '키워드',
+            data: data,
+            padding: 4,
+            fit: true,
+            shrinkToFit: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: 20
+          },
+          elements: {
+            word: {
+              color: colorFn,
+              rotate: () => 0,
+              padding: this.config.padding,
+              maxFontSize: this.config.maxFontSize,
+              minFontSize: this.config.minFontSize
+            }
+          },
+          scales: {
+            x: { display: false },
+            y: { display: false }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          },
+          // WordCloud 특화 옵션
+          wordCloud: {
+            fit: true,
+            shrinkToFit: true,
+            maxAttempts: 20,
+            drawOutOfBound: true,
+            minRotation: 0,
+            maxRotation: 0
+          }
+        }
+      });
+
+      // WordCloud 에러 처리
+      if (this.chart) {
+        this.chart.options.onError = (error) => {
+          console.warn('WordCloud error:', error);
+          // 에러 발생시 폰트 크기를 더 작게 조정해서 재시도
+          if (error && error.message && error.message.includes('cannot fit')) {
+            this.config.maxFontSize = Math.max(4, this.config.maxFontSize - 3);
+            this.config.minFontSize = Math.max(3, this.config.minFontSize - 1);
+            this.config.fontMultiplier = Math.max(1, this.config.fontMultiplier - 1);
+
+            // 3번 이상 실패하면 단어 수 줄이기
+            if (this.config.maxFontSize <= 6) {
+              this.words = this.words.slice(0, Math.max(5, this.words.length - 2));
+            }
+
+            setTimeout(() => {
+              this.renderCloud();
+            }, 200);
+          }
+        };
+      }
+    } catch (error) {
+      console.error('WordCloud initialization error:', error);
+
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#666';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('WordCloud 로딩 중...', canvas.width / 2, canvas.height / 2);
+      }
+    }
+  }
+};
+
+keyword.init();
+</script>
+ <script>
+	const dougnutData = [
+			{ category: '통화중', value: 850 },
+			{ category: '휴식', value: 420 },
+			{ category: '대기', value: 380 },
+			{ category: '후처리', value: 280 },
+			{ category: '로그아웃', value: 121 }
+	];
+	const dougnutData1 = [
+			{ category: '응답', value: 850 },
+			{ category: '무응답', value: 420 }
+	];	
+	const dougnutData2 = [
+			{ category: '응답', value: 490 },
+			{ category: '무응답', value:500 }
+	];
+
+	const lineChartData = [
+		{ time: '8시', actual: 15, target: 50 },
+		{ time: '9시', actual: 78, target: 60 },
+		{ time: '10시', actual: 92, target: 70 },
+		{ time: '11시', actual: 65, target: 80 },
+		{ time: '12시', actual: 88, target: 75 },
+		{ time: '13시', actual: 105, target: 85 },
+		{ time: '14시', actual: 150, target: 90 },
+		{ time: '15시', actual: 95, target: 95 },
+		{ time: '16시', actual: 82, target: 100 },
+		{ time: '17시', actual: 68, target: 90 }
+];
+	const barChartData = [
+		{ category: '1~20초', value: 245},
+		{ category: '21~40초', value: 300},
+		{ category: '41~60초', value: 156},
+		{ category: '61~80초', value: 147},
+		{ category: '81~300초', value: 102},
+		{ category: '301초 이상', value: 20}
+];
+
+	function createDonutChart(containerId, data, palette, showLegend = true, startAngle = 0) {
+			const container = $(containerId);
+			if (!container.length) return null;
+			const chart = container.dxPieChart({
+					dataSource: data,
+					palette: palette,
+					startAngle: startAngle,
+					series: [{
+							type: 'doughnut',
+							argumentField: 'category',
+							valueField: 'value',
+							innerRadius: 0.65,
+							label: {
+									visible: false,
+									position: 'inside',
+									format: {
+											type: 'fixedPoint',
+											precision: 0
+									},
+									backgroundColor: "none",
+									font: {
+											size: 13,
+											color: 'white',
+											weight: 'bold'
+									},
+									connector: {
+											visible: false
+									}
+							}
+					}],
+					legend: {
+							visible: showLegend,
+							horizontalAlignment: 'right',
+							verticalAlignment: 'center',
+							margin: {right:42},
+							font: {
+									size: 12
+							},
+							rowItemSpacing: 8,
+							columnItemSpacing: 16
+					},
+					tooltip: {
+							enabled: false
+					},
+					animation: {
+							enabled: true,
+							duration: 800,
+							easing: 'easeInOutCubic'
+					},
+					// size: {
+					//     width: undefined,
+					//     height: undefined
+					// },
+					// margin: {
+					//     // left: 10,
+					//     // right: 10,
+					//     // top: 10,
+					//     // bottom: 40
+					// },
+					onDrawn: function(e) {
+							requestAnimationFrame(function() {
+									const chartInstance = e.component;
+									const series = chartInstance.getAllSeries()[0];
+									
+									if (series) {
+											const center = series.getVisibleArea();
+											const centerX = (center.minX + center.maxX) / 2;
+											const centerY = (center.minY + center.maxY) / 2;
+											 
+											$(e.element).closest('.donutChart-box').find('.center-text').css({
+													left: centerX + 'px',
+													top: centerY + 'px'
+											});
+									}
+							});
+					}
+			}).dxPieChart("instance");
+			return chart;
+	}
+	createDonutChart('#donutChart1', dougnutData, ['#8A84DF', '#A19DE5', '#B9B5EC', '#D0CEF2', 'rgba(224, 224, 224, 0.60)'], true, 0);
+	createDonutChart('#donutChart2', dougnutData1, ['#C294D7', '#E0E0E0'], false, 270);
+	createDonutChart('#donutChart3', dougnutData2, ['#A19DE5', '#E0E0E0'], false, 270);
+	function createLineChart(containerId, data) {
+			const container = $(containerId);
+			if (!container.length) return null;
+
+			const chart = container.dxChart({
+					dataSource: data,
+					palette: 'material',
+					theme: 'material.blue.light',
+					commonSeriesSettings: {
+							type: 'spline',
+							argumentField: 'time',
+							point: {
+									size: 8,
+									hoverStyle: {
+											size: 10
+									},
+									border: {
+											visible: true,
+											width: 2,
+											color: '#fff'
+									}
+							},
+							line: {
+									width: 3
+							}
+					},
+					customizePoint: function(pointInfo) {
+						if (pointInfo.seriesName === '응답률') {
+								return { image: { url: 'resource/images/custom-symbol-1.png', width: 13, height: 13 }, visible: true };
+						} else if (pointInfo.seriesName === '서비스 레벨') {
+								return { image: { url: 'resource/images/custom-symbol-2.png', width: 13, height: 13 }, visible: true };
+						}
+						return null;
+					},
+					series: [
+							{
+									valueField: 'actual',
+									name: '응답률',
+									color: '#B98FCE',
+									point: {
+											visible: true,
+											symbol: 'circle',
+											color: '#B98FCE'
+									}
+							},
+							{
+									valueField: 'target',
+									name: '서비스 레벨',
+									color: '#8A84DF',
+									point: {
+											visible: true,
+											symbol: 'circle',
+											color: '#8A84DF'
+									}
+							}
+					],
+					argumentAxis: {
+							grid: {
+									visible: true,
+									color: '#E0E0E0',
+									opacity: 0
+							},
+							label: {
+									font: {
+											size: 12,
+											color: '#979797',
+											family: 'Roboto, sans-serif'
+									}
+							},
+							tick: {
+									visible: false
+							},
+							line: {
+									visible:false,
+									color: '#333'
+							}
+					},
+					valueAxis: {
+							min: 0,
+							// max: 160,
+							tickInterval: 20,
+							forceUserTickInterval: true,
+							tick: {
+									visible:false
+							},
+							grid: {
+									visible: true,
+									color: '#999',
+									opacity: 0.2
+							},
+							label: {
+									font: {
+											size: 11,
+											color: '#979797'
+									},
+									format: {
+											type: 'fixedPoint',
+											precision: 0
+									}
+							},
+							line: {
+									visible:false,
+							}
+					},
+					legend: {
+							visible: true,
+							position: 'outside',
+							orientation: 'horizontal',
+							horizontalAlignment: 'right',
+							verticalAlignment: 'top',
+							itemsAlignment: 'center',
+							columnCount: 2,
+							rowItemSpacing: 0,
+							columnItemSpacing: 20,
+							margin: { top: -30},
+							font: {
+									size: 12,
+									color: '#979797',
+									family: 'Roboto, sans-serif'
+							}
+					},
+					tooltip: {
+							enabled: true,
+							shared: true,
+							format: 'fixedPoint',
+							precision: 0,
+							shadow: {
+									opacity: 0.2,
+									offsetX: 0,
+									offsetY: 2,
+									blur: 8,
+									color: '#000'
+							},
+							border: {
+									visible: false
+							},
+							customizeTooltip: function(pointInfo) {
+									return {
+										text: pointInfo.argument + '<br/>' +
+											pointInfo.points.map(function(point) {
+													return '<span style="color:' + point.color + '">' +
+																	point.seriesName + ': ' + point.value + '</span>';
+											}).join('<br/>')
+									};
+							}
+					},
+					crosshair: {
+							enabled: true,
+							color: '#BDBDBD',
+							width: 1,
+							dashStyle: 'solid',
+							label: {
+									visible: false
+							}
+					},
+					animation: {
+							enabled: true,
+							duration: 1200,
+							easing: 'easeOutCubic'
+					},
+					size: {
+							// width: undefined,
+							// height: 280
+					},
+					// margin: {
+					// 		// left: 20,``
+					// 		// right: 20,
+					// 		// top: 20,
+					// 		// bottom: 60
+					// }
+			}).dxChart("instance");
+
+			return chart;
+	}
+	createLineChart('#lineChart1', lineChartData);
+
+	function createBarChart(containerId, data, palette) {
+		const container = $(containerId);
+		if (!container.length) return null;
+
+		const chart = container.dxChart({
+			dataSource: data,
+			palette:palette,
+			commonSeriesSettings: {
+				type: 'bar',
+				argumentField: 'category',
+				valueField: 'value',
+				ignoreEmptyPoints: true,
+				barPadding: 0.5
+			},
+			seriesTemplate: {
+					nameField: 'category'
+			},
+			argumentAxis: {
+					grid: {
+							visible: false
+					},
+					label: {
+							font: {
+									size: 12,
+									color: '#979797',
+									family: 'Roboto, sans-serif'
+							}
+					},
+					tick: {
+							visible: false
+					},
+					line: {
+							visible: false
+					}
+			},
+			valueAxis: {
+					min: 0,
+					tickInterval: 100,
+					forceUserTickInterval: true,
+					tick: {
+							visible: false
+					},
+					grid: {
+							visible: true,
+							color: '#999',
+							opacity: 0.2
+					},
+					label: {
+						visible: false,
+							// font: {
+							// 		size: 11,
+							// 		color: '#f00'
+							// }
+					},
+					line: {
+							visible: false
+					}
+			},
+			legend: {
+					visible: false
+			},
+			tooltip: {
+					enabled: true,
+					format: 'fixedPoint',
+					precision: 0,
+					customizeTooltip: function(pointInfo) {
+							return {
+									text: pointInfo.argumentText + ': ' + pointInfo.valueText + '건'
+							};
+					}
+			},
+			animation: {
+					enabled: true,
+					duration: 1000,
+					easing: 'easeOutCubic'
+			},
+			// size: {
+			// 		// width: undefined,
+			// 		// height: 280
+			// }
+			}).dxChart("instance");
+
+			return chart;
+	}
+	let currentBarChart = null;
+	function updateBarChart(filter) {
+			if (currentBarChart) {
+					currentBarChart.dispose();
 			}
-		});
-   // $('.navList>li>a[data-nav-title="대시보드"]').trigger('click');
-	</script>
+
+			let filteredData = barChartData;
+			if (filter !== 'all') {
+					filteredData = barChartData.filter(item => item.category === filter);
+			}
+
+			currentBarChart = createBarChart('#barChart1', filteredData, ['rgba(143, 138, 208, 1)', 'rgba(143, 138, 208, 0.9)', 'rgba(143, 138, 208, 0.8)', 'rgba(143, 138, 208, 0.7)', 'rgba(143, 138, 208, 0.6)', 'rgba(143, 138, 208, 0.5)']);
+	}
+	updateBarChart('all');
+	$('#chartFilterSelect').on('change', function() {
+			const selectedFilter = $(this).val();
+			updateBarChart(selectedFilter);
+	});
+</script>
+<script>
+	const gridData = [
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:10, t2:10, t3:10, t4:10, t5:10, t6:0},
+		{id : 'SKT23121-last',  qid : 'VC111110000', qname : '기타문의', g1:0, g2:0, g3:0, g4:0, t1:0, t2:10, t3:10, t4:10, t5:10, t6:0}
+];
+	const gridColumns = {
+		data1: [
+			{
+				dataField: 'id',
+				caption: '테넌트',
+				width: '10%',
+				alignment: 'center'
+			},
+			{
+				dataField: 'qid',
+				caption: '큐ID',
+				width: '15%',
+				alignment: 'center',
+				format: {
+					type: 'fixedPoint',
+					precision: 0
+				}
+			},
+			{
+				dataField: 'qname',
+				caption: '큐이름',
+				width: '15%',
+				alignment: 'center'
+			},
+			{
+				dataField: 't1',
+				caption: '1~20초',
+				width: '10%',
+				alignment: 'center'
+			},
+			{
+				dataField: 't2',
+				caption: '21~40초',
+				width: '10%',
+				alignment: 'center'
+			},
+			{
+				dataField: 't3',
+				caption: '41~60초',
+				width: '10%',
+				alignment: 'center'
+			},
+			{
+				dataField: 't4',
+				caption: '61~80초',
+				width: '10%',
+				alignment: 'center'
+			},
+			{
+				dataField: 't5',
+				caption: '81~300초',
+				width: '10%',
+				alignment: 'center'
+			},
+			{
+				dataField: 't6',
+				caption: '300초 이상',
+				width: '10%',
+				alignment: 'right'
+			}
+		],
+		data2: [
+			{
+				dataField: 'id',
+				caption: '테넌트',
+				width: '10%',
+				alignment: 'center'
+			},
+			{
+				dataField: 'qid',
+				caption: '큐ID',
+				width: '15%',
+				alignment: 'center'
+			},
+			{
+				dataField: 'qname',
+				caption: '큐이름',
+				width: '15%',
+				alignment: 'center'
+			},
+			{
+				dataField: 'g1',
+				caption: '대기호',
+				width: '10%',
+				alignment: 'right'
+			},
+			{
+				dataField: 'g2',
+				caption: '총인입호',
+				width: '10%',
+				alignment: 'right'
+			},
+			{
+				dataField: 'g3',
+				caption: '서비스레벨',
+				width: '10%',
+				alignment: 'right'
+			},
+			{
+				dataField: 'g4',
+				caption: '분해홀',
+				width: '10%',
+				alignment: 'right'
+			},
+			{
+				dataField: 't5',
+				caption: '81~300초',
+				width: '10%',
+				alignment: 'right'
+			},
+				{
+				dataField: 't6',
+				caption: '301초 이상',
+				width: '10%',
+				alignment: 'right'
+			}
+		]
+	};
+
+	function createDataGrid(containerId, data, columnsType) {
+		const container = $(containerId);
+		if (!container.length) return null;
+
+		const grid = container.dxDataGrid({
+			dataSource: data,
+			keyExpr: 'id',
+			showBorders: true,
+			showRowLines: true,
+			showColumnLines: true,
+			columnAutoWidth: true,
+			scrolling: {
+				mode: "virtual"
+			},
+			paging: {
+				enabled: false
+			},
+			columns: gridColumns[columnsType],
+			headerFilter: {
+				visible: false
+			},
+			filterRow: {
+				visible: false
+			},
+			searchPanel: {
+				visible: false
+			},
+			selection: {
+				mode: 'single'
+			},
+			hoverStateEnabled: true
+		}).dxDataGrid("instance");
+
+		return grid;
+	}
+
+	createDataGrid('#gridTable1', gridData, 'data1');
+	//createDataGrid('#gridTable2', gridData, 'data2');
+</script>
 </body>
 </html> 

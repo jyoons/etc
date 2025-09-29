@@ -122,7 +122,7 @@
 /*미디어쿼리 */
 @media (min-width: 1024px) and (max-width: 1279px) {/* 테블릿 가로 사이즈 */ 
 .wrapper{height:auto;}
-.header{position:sticky; top:0; left:0; z-index:999; background:pink; }
+.header{position:sticky; top:0; left:0; z-index:999;}
 .container{height:auto;}
 .header-wrap .info-area{gap:35px;}
 .header-wrap .info-area>div + div{margin-left:0;}
@@ -145,7 +145,7 @@
 }
 @media (min-width: 300px) and (max-width: 1023px) {/* 테블릿 세로 사이즈 */
 .wrapper{height:auto;}
-.header{position:sticky; top:0; left:0; z-index:999; padding-top:15px; background:#CCC;}
+.header{position:sticky; top:0; left:0; z-index:999; padding-top:15px;}
 .container{height:auto;}
 .header-wrap{flex-wrap:wrap; height:auto;}
 .header-wrap .info-area{width:100%; justify-content:space-between; gap:0 20px; flex-wrap: wrap; padding-top:4px;}
@@ -169,6 +169,29 @@
 .data-list-card{min-height:60px;}
 .chart-area-multi{padding:0 20px;}
 }
-/* @media (min-width: 300px) and (max-width: 767px) {
-
-} */
+@media (min-width: 300px) and (max-width: 767px) { /* 모바일 사이즈 */ 
+.wrapper{height:auto;}
+.header{position:sticky; top:0; left:0; z-index:999; padding-top:15px;}
+.container{height:auto;}
+.header-wrap{flex-wrap:wrap; height:auto;}
+.header-wrap .info-area{width:100%; justify-content:space-between; gap:0 20px; flex-wrap: wrap; padding-top:4px;}
+.header-wrap .info-area>div + div{margin-left:0;}
+.header-wrap .info-area>div:last-of-type{margin-left:auto;}
+.conts-area-wrap{padding:18px;}
+.conts-area-wrap.flexible-area.type-flexible{display:block;  height:auto;}
+.conts-area-wrap.flexible-area.type-flexible .grid-row{display:block; width:100%;}
+.conts-area-wrap.flexible-area.type-flexible .grid-row .grid-area{display:block; width:100% !important;}/* width 확인 */
+.conts-area-wrap.flexible-area.type-flexible .grid-row .grid-area + .grid-area{margin-top:22px;}
+.conts-area-wrap.flexible-area .grid-row .grid-area{background-image: none;}
+.conts-area-wrap.flexible-area .grid-row .grid-area .resize-h {display:none;}/* resizable 제거 */
+.conts-area-wrap.flexible-area .grip-v{display:none;}
+.conts-area-wrap.flexible-area .grip-v + .grid-row{margin-top:10px;}
+.conts-area-wrap.flexible-area{display:block; height:auto;}
+.grid-row.row-1, .grid-row.row-2{flex-wrap:wrap;}
+.grid-row.row-1 .grid-area:nth-child(1), .grid-row.row-1 .grid-area:nth-child(2),
+.grid-row.row-2 .grid-area:nth-child(1), .grid-row.row-2 .grid-area:nth-child(2){width:100%; height:350px; flex:0 0 100% !important}
+.grid-row.row-1 .grid-area:nth-child(3),
+.grid-row.row-2 .grid-area:nth-child(3){width:100%; flex:0 0 100% !important;  height:400px;}
+.data-list-card{min-height:60px;}
+.chart-area-multi{padding:0 20px;}
+}
