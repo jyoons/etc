@@ -43,33 +43,14 @@ q:before, q:after{content: ''; content: none;}
 table {border-collapse: collapse; border-spacing: 0;}
 legend, caption {display:none;}
 button {border: none; background: transparent; cursor: pointer; padding: 0;}
-button:focus,
-button:active,
-textarea:focus,
-textarea:active,                    
-:root {
-/* --color-text-gray: #444; */
-/* --color-text-gray1: #333;
---color-text-gray2: #777;
---color-text-gray3: #999;
---color-text-black: #222; */
-/* --color-border-gray1 : #EBEBEB; 
---color-border-gray2 : #EEE; 
---color-border-gray3 : #DDD; 
---color-bg-primary: #95BDF0;
---color-bg-white: #FFF;
---color-bg-gray: #F2F2F2;
---color-bg-blue: #EEF5FF;
---font-family:'Pretendard', sans-serif;
---filter-ico : none; */
-}
- 
-/* scrollbar */
+
+ /* scrollbar */
 ::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-thumb{background-color: #babac0; border-radius: 16px;}
-::-webkit-scrollbar-thumb:hover{background-color: #a0a0a5;}
+::-webkit-scrollbar-thumb{background-color: #E1E1E1; border-radius:100px;}
+::-webkit-scrollbar-thumb:hover{background-color: #E1E1E1;}
 ::-webkit-scrollbar-track {background-color: transparent;}
-::-webkit-scrollbar-track:hover {background-color: #f4f4f4}
+::-webkit-scrollbar-track:hover {background-color: transparent;}
+
 .ellipsis{text-overflow: ellipsis; white-space: nowrap; word-break: break-all; overflow: hidden;}
 .dis-none{display:none !important;}
 .sr-only {position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;}

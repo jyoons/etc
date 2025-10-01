@@ -52,9 +52,9 @@ const NX_UI = function(nx){
       $(toggleBtn).each(function(i){
         var $this = $(this);
         var isActive = $(this).hasClass('active');
-        var flag = $(this).closest('.accordion-wrap').attr('data-acc');
+       // var flag = $(this).closest('.accordion-wrap').attr('data-acc');
         if(isActive){
-          This._slideDown($this, flag); 
+          This._slideDown($this); 
         }
       })
     },
@@ -63,33 +63,35 @@ const NX_UI = function(nx){
       var This = this;
       $(document).off('click' ,toggleBtn).on('click', toggleBtn, function(e){
         var isActive = $(this).hasClass('active');
-        var flag = $(this).closest('.accordion-wrap').attr('data-acc');
+        //var flag = $(this).closest('.accordion-wrap').attr('data-acc');
         var $this = $(this);
         if(! isActive){
-          This._slideDown($this, flag); 
+          This._slideDown($this); 
         }else{
-          This._slideUp($this, flag, toggleBtn);
+          This._slideUp($this);
         }
       });
     },
-    _slideDown:function(t, flag){
+    _slideDown:function(t){
       t.addClass('active');
       t.parents('.accordion-header').next('.accordion-conts').slideDown(300);
-      if(flag === 'button'){
-        t.closest('.accordion').addClass('active');
-      }
+       t.closest('.accordion').addClass('active');
+      // if(flag === 'button'){
+      //   t.closest('.accordion').addClass('active');
+      // }
     },
-    _slideUp:function(t, flag, toggleBtn){
+    _slideUp:function(t){
       t.removeClass('active');
       t.parents('.accordion-header').next('.accordion-conts').slideUp(300);
-      if(flag === 'double'){
-        t.closest('.accordion').find('.accordion-conts').slideUp(300);
-        t.closest('.accordion').find(toggleBtn).removeClass('active');
-        t.closest('.accordion').find('.accordion').removeClass('active');
-      }
-      if(flag === 'button'){
-        t.closest('.accordion').removeClass('active');
-      }
+      t.closest('.accordion').removeClass('active');
+      // if(flag === 'double'){
+      //   t.closest('.accordion').find('.accordion-conts').slideUp(300);
+      //   t.closest('.accordion').find(toggleBtn).removeClass('active');
+      //   t.closest('.accordion').find('.accordion').removeClass('active');
+      // }
+      // if(flag === 'button'){
+      //   t.closest('.accordion').removeClass('active');
+      // }
     }
   },
 

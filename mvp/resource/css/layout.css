@@ -1,4 +1,4 @@
-.wrapper{position:relative; width:100%; height:100%;  min-width:1600px;}
+.wrapper{position:relative; width:100%; height:100%;  min-width:1900px;}
 .container{position:relative; display:flex; width:100%; height:calc(100% - 46px);}
 .contents{position:relative; width:calc(100% - 60px); background:#F2F2F2; height:100%; overflow:auto;}
 .contents-wrap{display:flex; width:100%; height:100%; padding:12px; gap:0 12px;}
