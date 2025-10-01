@@ -139,7 +139,7 @@
                 try {
                   eval($(this).text());
                 } catch(e) {
-                	console.log('스크립트 실행 오류:', e);
+                	//console.log('스크립트 실행 오류:', e);
                 }
               });
 
@@ -214,14 +214,13 @@
         self._ensureTab(title, { closable: !isHome, url: url });
       });
       this.$tabList.on('click', 'a.tab-nav-link', function(e){
-        //e.preventDefault();
+        e.preventDefault();
         var key = $(this).closest('li').data('key');
         if(key != null) self._activateByKey(key);
       });
       this.$tabList.on('click', '.tab-nav-close', function(e){
-        //e.preventDefault();
-        //e.stopPropagation();
-        console.log('click-close');
+        e.preventDefault();
+        e.stopPropagation();
         var $li = $(this).closest('li');
         var wasActive = $li.hasClass('active');
         var $prev = $li.prev('li');

@@ -48,9 +48,10 @@ const NX_UI = function(nx){
     _setEvent:function(){
       $(document).off('mouseenter mouseleave click', '.nav-btn, .nav').on('mouseenter mouseleave click', '.nav-btn, .nav', function(e){
         if(e.type === 'mouseenter') {
-          console.log('mouseenter')
+          if (!window.matchMedia('(hover: hover)').matches) return; // 터치 디바이스일 경우 이벤트 무시
           $('.nav').addClass('active');
         }else if(e.type === 'mouseleave') {
+          if (!window.matchMedia('(hover: hover)').matches) return; // 터치 디바이스일 경우 이벤트 무시
           var flag =  e.target.className;
           if(flag.indexOf('nav-btn') < 0 ) {
             $('.nav').removeClass('active');
