@@ -79,6 +79,9 @@
 				<li data-nav-title="대시보드" data-nav-url="pages/page-02.html">
 					<a href="javascript:void(0);" class="nav-dep1" data-nav-title="대시보드"><i class="im-dashbord">dashboard</i></a>
 				</li>
+        	<li data-nav-title="모니터링" data-nav-url="pages/page-03.html">
+					<a href="javascript:void(0);" class="nav-dep1" data-nav-title="모니터링"><i class="im-dashbord">monitoring</i></a>
+				</li>
 				<!-- <li data-nav-title="모니터링" data-nav-url="index-3.html">
 					<a href="javascript:void(0);" class="nav-dep1" data-nav-title="모니터링"><i class="im-monitoring">모니터링</i></a>
 				</li> -->
@@ -161,14 +164,14 @@
       var exists = $tabList.find('li[data-key="' + key + '"]').length > 0;
       if (exists){
         this._activateByKey(key);
-        return key;
+        return key; 
       }
       var closable = opts.closable !== false;
       var $li = $('<li/>', { 'data-key': key });
       var $a  = $('<a/>', {
         href: '#',
         'class': 'tab-nav-link',
-        text: title,
+        text: title, 
         'data-title': title,
         'data-url': opts.url || ''
       });
@@ -211,13 +214,14 @@
         self._ensureTab(title, { closable: !isHome, url: url });
       });
       this.$tabList.on('click', 'a.tab-nav-link', function(e){
-        e.preventDefault();
+        //e.preventDefault();
         var key = $(this).closest('li').data('key');
         if(key != null) self._activateByKey(key);
       });
       this.$tabList.on('click', '.tab-nav-close', function(e){
-        e.preventDefault();
-        e.stopPropagation();
+        //e.preventDefault();
+        //e.stopPropagation();
+        console.log('click-close');
         var $li = $(this).closest('li');
         var wasActive = $li.hasClass('active');
         var $prev = $li.prev('li');
@@ -233,7 +237,7 @@
   tabNavs.init();
 	</script>
 	<script>
-   /// $('.navList>li>a[data-nav-title="대시보드"]').trigger('click');
+   // $('.navList>li>a[data-nav-title="모니터링"]').trigger('click');
 	</script>
 </body>
-</html> 
+</html>    

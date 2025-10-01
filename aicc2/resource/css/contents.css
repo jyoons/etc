@@ -50,6 +50,9 @@
 .grid-row .grid-area{width:100%; height:100%;}
 .resize-h{position:absolute; right:0; bottom:0; height:100%; width:4px; background:transparent; cursor:col-resize; z-index:2;}
 .grid-area:last-child .resize-h{ display:none;}
+.grid-row > .grid-area.dis-none .resize-h,
+.grid-row > .grid-area:not(.dis-none):not(:has(~ .grid-area:not(.dis-none))) .resize-h{display:none;}
+
 .grid-conts .data-list-cards.col-3{grid-template-columns: repeat(3, 1fr); justify-content: center;}
 .grid-conts .data-list-card{width:100%; height:100%;}
 .grid-conts-inner{margin-top:15px; height:calc(100% - 35px);}
@@ -98,6 +101,7 @@
 .msg-header .msg-info.info1{width:40%;}
 @container ((min-width:100px) and (max-width:800px)){
   .msg-header{flex-wrap: wrap;}
+  .msg-header .msg-info{width:100%;}
 }
 .msg-header + .msg-box{margin-top:10px;}
 .msg-box{height:250px; padding:20px 22px; border-radius:6px; overflow-y: auto; 
@@ -143,7 +147,7 @@
 .data-list-card{min-height:60px;}
 .chart-area-multi{padding:0 20px;}
 }
-@media (min-width: 300px) and (max-width: 1023px) {/* 테블릿 세로 사이즈 */
+@media (min-width: 768px) and (max-width: 1023px) {/* 테블릿 세로 사이즈 */
 .wrapper{height:auto;}
 .header{position:sticky; top:0; left:0; z-index:999; padding-top:15px;}
 .container{height:auto;}
