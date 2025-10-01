@@ -22,7 +22,6 @@ time, mark, audio, video {
 	box-sizing: border-box;
 }
 p, a, h1, h2, h3, h4, h5, h6 {transform: skew(-0.1deg);}
-/* HTML5 display-role reset for older browsers */d
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {display: block;}
 ol, ul, li{list-style: none;}
@@ -45,7 +44,7 @@ legend, caption {display:none;}
 button {border: none; background: transparent; cursor: pointer; padding: 0;}
 
  /* scrollbar */
-::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar{width:6px; height:6px;}
 ::-webkit-scrollbar-thumb{background-color: #E1E1E1; border-radius:100px;}
 ::-webkit-scrollbar-thumb:hover{background-color: #E1E1E1;}
 ::-webkit-scrollbar-track {background-color: transparent;}

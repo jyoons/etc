@@ -1051,18 +1051,15 @@
             msgArea.removeClass('dis-none').animate({
               'margin-top': marginTop
             }, 300);
-          }, idx * 500); // 1초 간격으로 표시
+          }, idx * 500);
         });
       });
     }
-
     showMessages();
     function moreBtn(target) {
       target.parent('.btn-area').addClass('dis-none');
       var msgBoxInner = target.closest('.msg-box').find('.msg-box-inner');
       msgBoxInner.css('overflow-y', 'auto');
-
-      // step 단위로 부드럽게 스크롤 애니메이션
       var currentScrollTop = msgBoxInner.scrollTop();
       var targetScrollTop = msgBoxInner[0].scrollHeight;
       var step = 50;
@@ -1085,9 +1082,7 @@
           });
         }
       }
-
       animateScrollStep();
-    
     };
 
     $('.msg-box .btn.i-more').on('click', function(){
