@@ -671,7 +671,7 @@
             </div>
             <!--// 모니터링 : 실시간 현황 -->
             <!-- 모니터링 : 대화 이력 -->
-            <div class="conts-area">
+            <div class="conts-area type-msgbox">
                <div class="conts-area-inner"> 
                 <div class="tit-wrap">
                   <div class="tit">실시간 대화</div>
@@ -1041,21 +1041,37 @@
     function showMessages() {
       $('.msg-box').each(function(i){
         var msgBox = $(this);
-        var msgAreas = msgBox.find('.msg-area.dis-none');
-        msgAreas.each(function(idx) {
-          var msgArea = $(this);
-          var marginTop;
-          (idx === 1 ) ?  marginTop = 0 : marginTop = 6;
-          $(this).css('margin-top', 20);
+        var msgAreas = msgBox.find('.msg-area');
+        var flag = msgBox.closest('.accordion-conts');
+        if(flag.length > 0){
           setTimeout(function() {
-            msgArea.removeClass('dis-none').animate({
-              'margin-top': marginTop
-            }, 300);
-          }, idx * 500);
-        });
+            if(flag.css('display') === 'block'){
+              msgAreas.each(function(idx) {
+                var msgArea = $(this);
+                var marginTop;
+                (idx === 1 ) ?  marginTop = 0 : marginTop = 6;
+                $(this).css('margin-top', 20);
+                setTimeout(function() {
+                  msgArea.removeClass('dis-none').animate({
+                    'margin-top': marginTop
+                  }, 300);
+                }, idx * 500);
+              });
+             
+            }else{
+              msgAreas.addClass('dis-none');
+              msgBox.find('.btn-area').removeClass('dis-none');
+              msgBox.find('.msg-box-inner').css('overflow-y', 'hidden');
+            }
+           }, 500);
+        }
       });
     }
-    showMessages();
+    showMessages(); // 초기 메시지 노출
+    $(document).on('click', '.btn-acc', function(){ // accordion click 시
+      showMessages();
+    });
+
     function moreBtn(target) {
       target.parent('.btn-area').addClass('dis-none');
       var msgBoxInner = target.closest('.msg-box').find('.msg-box-inner');
@@ -1089,6 +1105,6 @@
       var $this = $(this);
       moreBtn($this);
     });
-  </script>
+</script>
 </body>
 </html>
