@@ -1068,8 +1068,22 @@
       });
     }
     showMessages(); // 초기 메시지 노출
-    $(document).on('click', '.btn-acc', function(){ // accordion click 시
-      showMessages();
+
+    var wasActive = false;
+    $(document).on('mousedown', '.btn-acc', function(e){
+      wasActive = $(this).hasClass('active');
+    });
+
+    $(document).on('click', '.btn-acc', function(e){ // accordion click 시
+      var $this = $(this);
+      if(!wasActive) {
+        setTimeout(function() {
+          showMessages();
+        }, 300);
+      } else {
+        $this.parents('.accordion-header').next('.accordion-conts').find('.msg-area').addClass('dis-none');
+        $this.parents('.accordion').find('.btn-area').removeClass('dis-none');
+      }
     });
 
     function moreBtn(target) {
