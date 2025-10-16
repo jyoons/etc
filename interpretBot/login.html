@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>통역봇</title>
+  <link rel="stylesheet" type="text/css" href="resource/css/common.css">
+</head>
+<body>
+  <div class="wrapper login">
+    <div class="login-container">
+      <div class="login-cont">
+        <div class="login-header">
+          <div class="logo">
+            <img src="resource/images/logo.svg" alt="">
+            <div>통역봇</div>
+          </div>
+        </div>
+        <form id="form1">
+          <div class="input-field i-id">
+            <input class="input" id="userId" type="text" placeholder="내선번호를 입력하세요" required="">
+          </div>
+          <div class="btn-area">
+            <button type="button" class="btn" onClick="location.href='index.html'">로그인</button>
+          </div>
+        </form>
+      </div>
+      <div class="copyright">ⓒ 2025 NEXUS COMMUNITY All rights reserved.</div>
+    </div>
+      
+  </div>
+  <script>
+  // select box
+  document.querySelectorAll('.select-box').forEach((box) => {
+    const selected = box.querySelector('.selected-tit');
+    const options = box.querySelector('.select-options');
+    selected.addEventListener('click', (e) => { 
+      e.stopPropagation(); 
+      document.querySelectorAll('.select-box.open').forEach((otherBox) => {
+        if (otherBox !== box) otherBox.classList.remove('open');
+      });
+      box.classList.toggle('open');
+    });
+    options.querySelectorAll('li').forEach((option) => {
+      option.addEventListener('click', () => {
+        options.querySelectorAll('li').forEach((li) => li.classList.remove('selected'));
+        option.classList.add('selected');
+        selected.querySelector('.tit').textContent = option.textContent;
+        box.classList.remove('open');
+      });
+    });
+  });
+
+  /* play/pause button */
+  document.querySelectorAll('.ico-btn.i-play').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('i-play');
+      btn.classList.toggle('i-pause');
+    });
+  });
+  </script>
+</body>
+</html>
