@@ -96,12 +96,12 @@ button {border: none; background: transparent; cursor: pointer; padding: 0;}
 .select-box.open .selected-tit:before{transform: rotate(180deg);}
 .select-box .selected-tit{display:flex; align-items:center; width:100%; height:30px; padding:0 24px 0 12px; background:var(--bg-default); border:1px solid var(--gray-border-2); border-radius:4px;}
 .select-box .selected-tit .tit{width:100%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
-.select-box .select-options{display:none; z-index:99; position:absolute; top:32px; width:100%; max-height:200px; overflow-y: auto; background:var(--bg-default); border:1px solid var(--gray-border-2);}
+.select-box .select-options{display:none; z-index:99; transition: all 0.4s ease; position:absolute; top:32px; width:100%; max-height:0; overflow-y: auto; background:var(--bg-default); border:1px solid var(--gray-border-2);}
 .select-box .select-options li + li{margin-top:6px;}
 .select-box .select-options li{padding:4px 12px; word-break:break-all;}
 .select-box .select-options li.selected,
 .select-box .select-options li:hover{background:var(--primary-color); color:var(--color-white);}
-.select-box.open .select-options{display:block;} 
+.select-box.open .select-options{display:block; max-height:200px;} 
 
 /* input */
 .input-field{position:relative; height:48px; border:1px solid #3E9BED; background:#F0F7FE; border-radius:6px;}

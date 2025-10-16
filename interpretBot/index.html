@@ -243,16 +243,33 @@
     selected.addEventListener('click', (e) => { 
       e.stopPropagation(); 
       document.querySelectorAll('.select-box.open').forEach((otherBox) => {
-        if (otherBox !== box) otherBox.classList.remove('open');
+        if (otherBox !== box) {
+          otherBox.classList.remove('open');
+          otherBox.querySelector('.select-options').style.display="none";
+        }
       });
-      box.classList.toggle('open');
+      //box.classList.toggle('open');
+      if (box.classList.contains('open')){
+        box.classList.remove('open');
+        setTimeout(() => {
+           options.style.display="none";
+        }, 400);
+      } else {
+        options.style.display="block";
+        setTimeout(() => {
+          box.classList.add('open');
+        }, 0);
+      }
     });
     options.querySelectorAll('li').forEach((option) => {
       option.addEventListener('click', () => {
         options.querySelectorAll('li').forEach((li) => li.classList.remove('selected'));
         option.classList.add('selected');
         selected.querySelector('.tit').textContent = option.textContent;
-        box.classList.remove('open');
+        box.classList.remove('open'); 
+        setTimeout(() => {
+           options.style.display="none";
+        }, 400)
       });
     });
   });
