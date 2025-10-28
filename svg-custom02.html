@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevExtrems</title>
+    <link rel="stylesheet" type="text/css" href="/resource/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/fonts.css">
+    <style>
+      .pubGuide-components-wapper{padding:20px;}
+      .pubGuide-components-wapper .tit{margin-bottom:15px; font-size:20px; font-weight:700;}
+      .pubGuide-components-wapper .conts .conts-tit{padding:10px 4px; font-size:16px; font-weight:500; background-color:#a9b5ca;}
+      /* comonent style */
+      .svg-wrap{position:relative; width:50px; margin:10px;}
+      .svg_conts_back,  .svg_conts_bg{position:absolute; width:100%; height:auto;}
+      .svg_conts_front{position:absolute; width:100%; height:auto;}
+      svg{width:100%; height: auto; display:block; overflow: visible;}
+    </style>
+</head>
+<body>
+  <div class="svg-wrap">
+    <div class="svg_conts_back">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none">
+        <g>
+          <title>Layer 1</title>
+          <path id="svg_1" stroke-linejoin="round" stroke-linecap="round" stroke="#CFD1DB" fill="#F1F6FF" d="m21.5005,0.95166c5.2552,0.00026 9.5146,4.2523 9.5146,9.49314l0,104.7012c0.0002,0.181 0.0987,0.348 0.2569,0.437c6.1311,3.421 10.2763,9.957 10.2763,17.462c0,11.048 -8.9751,20.003 -20.0478,20.003c-11.0729,0 -20.04884,-8.957 -20.04884,-20.003c0.00006,-7.505 4.14507,-14.038 10.27634,-17.462c0.1581,-0.089 0.2567,-0.256 0.2569,-0.437l0,-104.7012c0,-5.241 4.2601,-9.49314 9.5156,-9.49314z"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,43.2932l-3.6517,0"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,49.7397l-3.6517,0"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,56.1841l-3.6517,0"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,62.6306l-3.6517,0"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,69.0752l-3.6517,0"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,75.5217l-3.6517,0"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,81.9661l-3.6517,0"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,88.4104l-3.6517,0"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,94.8569l-3.6517,0"/>
+          <path stroke-linejoin="round" stroke-linecap="round" stroke="#C6CCDC" d="m30.5155,101.302l-3.6517,0"/>
+        </g>
+      </svg>
+    </div>
+    <div class="svg_conts_bg">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none">
+      <g>
+        <title>Layer 1</title>
+        <path id="svg_14" fill="#FFF" stroke="#C6CCDC" stroke-width="1"
+          d="M18.7,10 
+            v114.0  
+            c-3.934,1.142 -6.813,4.761 -6.813,9.056
+            c0,5.211 4.237,9.439 9.460,9.439
+            c5.224,0 9.460,-4.228 9.460,-9.439
+            c0,-4.295 -2.877,-7.914 -6.811,-9.056
+            v-114.0  
+            Q21.5,6 18.7,10
+            z"/>
+      </g>
+      </svg>
+    </div>
+    <div class="svg_conts_front">
+      <svg>
+        <defs>
+          <path id="shapePath" d="M18.7,10 
+            v114.0  
+            c-3.934,1.142 -6.813,4.761 -6.813,9.056
+            c0,5.211 4.237,9.439 9.460,9.439
+            c5.224,0 9.460,-4.228 9.460,-9.439
+            c0,-4.295 -2.877,-7.914 -6.811,-9.056
+            v-114.0  
+            Q21.5,6 18.7,10
+            z"/>
+          <clipPath id="shapeClip" clipPathUnits="userSpaceOnUse">
+            <use href="#shapePath"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#shapeClip)">
+          <rect id="fillRect" x="0" y="16" width="9" height="0" fill="#00AD1A"/>
+        </g>
+        <use href="#shapePath" fill="none" stroke="#FFF" stroke-width="0"/>
+      </svg>
+    </div>
+  </div>
+<script>
+  const path = document.getElementById('shapePath');
+  const rect = document.getElementById('fillRect');
+  const box = path.getBBox();
+  function getFillColor(percent){
+    // HSL 보간: 0% = 초록, 100% = 빨강
+    if (percent < 30) return "green";
+    if (percent < 70) return "blue";
+    if (percent < 100) return "red";
+    return "#FF0000"; 
+  }
+
+  function setFill(percent){
+    const p = Math.max(0, Math.min(100, percent)) / 100;
+    const h = box.height;
+    const y = box.y + h * (1 - p);
+    rect.setAttribute('x', box.x);
+    rect.setAttribute('width', box.width);
+    rect.setAttribute('y', y);
+    rect.setAttribute('height', h * p);
+    rect.setAttribute('fill', getFillColor(percent));
+  }
+
+  let _intervalId = null;
+  let _current = 0;
+
+  function animateFill(toPercent, duration){
+    if (_intervalId) clearInterval(_intervalId);
+    const from = _current;
+    const to = Math.max(0, Math.min(100, toPercent));
+    const frames = Math.round(duration / 16);
+    let frame = 0;
+
+    _intervalId = setInterval(() => {
+      frame++;
+      const t = frame / frames;
+
+      const k = (t < 0.5) ? 2*t*t : -1+(4-2*t)*t;
+      const val = from + (to - from) * k;
+      setFill(val);
+      if (frame >= frames) {
+        clearInterval(_intervalId);
+        _intervalId = null;
+        _current = to;
+      }
+    }, 16);
+  }
+  setFill(0);
+  animateFill(90, 1000);
+</script>
+</body>
+</html>

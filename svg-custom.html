@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevExtrems</title>
+    <link rel="stylesheet" type="text/css" href="/resource/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/fonts.css">
+    <style>
+      .pubGuide-components-wapper{padding:20px;}
+      .pubGuide-components-wapper .tit{margin-bottom:15px; font-size:20px; font-weight:700;}
+      .pubGuide-components-wapper .conts{}
+      .pubGuide-components-wapper .conts .conts-tit{padding:10px 4px; font-size:16px; font-weight:500; background-color:#a9b5ca;}
+      /* comonent style */
+      .svg-wrap{position:relative; width:50px; margin:10px;}
+      .svg_conts_back{position:absolute; width:100%; height:auto;}
+      .svg_conts_front{position:absolute; width:100%; height:auto;}
+      svg{width:100%; height: auto; display:block; overflow: visible;}
+    </style>
+</head>
+<body>
+  <div class="svg-wrap">
+    <div class="svg_conts_back">
+       <svg viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path  stroke="#00AD1A" stroke="red" stroke-width="1" id="shape" d="m1.93,3.5c0,-1.42 1.15,-2.57 2.57,-2.57c1.42,0 2.57,1.15 2.57,2.57l0,3.38c1.17,0.81 1.93,2.16 1.93,3.69c0,2.49 -2.01,4.5 -4.5,4.5c-2.49,0 -4.5,-2.01 -4.5,-4.5c0,-1.53 0.76,-2.88 1.93,-3.69l0,-3.38z"/>
+      </svg>
+    </div>
+    <div class="svg_conts_front">
+      <svg viewBox="0 0 9 16">
+        <defs>
+          <path id="shapePath" d="m2.66,7.93c-0.85,0.6 -1.37,1.58 -1.37,2.64c0,1.78 1.43,3.22 3.21,3.22c1.78,0 3.21,-1.44 3.21,-3.22c0,-1.06 -0.52,-2.04 -1.37,-2.64l-0.55,-0.38l0,-4.05c0,-0.71 -0.58,-1.29 -1.29,-1.29c-0.71,0 -1.29,0.58 -1.29,1.29l0,4.05l-0.55,0.38z"/>
+          <clipPath id="shapeClip" clipPathUnits="userSpaceOnUse">
+            <use href="#shapePath"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#shapeClip)">
+          <rect id="fillRect" x="0" y="16" width="9" height="0" fill="#00AD1A" stroke-width="0"/>
+        </g>
+        <use href="#shapePath" fill="none" stroke="#FFF" stroke-width="0"/>
+      </svg>
+    </div>
+  </div>
+<script>
+  const path = document.getElementById('shapePath');
+  const rect = document.getElementById('fillRect');
+  const box = path.getBBox();
+  function setFill(percent){
+    const p = Math.max(0, Math.min(100, percent)) / 100;
+    const h = box.height;
+    const y = box.y + h * (1 - p);
+    rect.setAttribute('x', box.x);
+    rect.setAttribute('width', box.width);
+    rect.setAttribute('y', y);
+    rect.setAttribute('height', h * p);
+  }
+  setFill(10);
+</script>
+</body>
+</html>
